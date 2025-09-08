@@ -1,6 +1,6 @@
 # GNU COBOL + Docker + VS Code (Dev Containers)
 
-A cross-platform template for teaching **GNU COBOL** using **Docker** and **VS Code Dev Containers**. 
+A cross-platform template for teaching **GNU COBOL** using **Docker** and **VS Code Dev Containers**.
 Works the same on **Windows 11** and **macOS** (Apple Silicon and Intel).
 
 ## Quick Start (Students)
@@ -27,8 +27,8 @@ Works the same on **Windows 11** and **macOS** (Apple Silicon and Intel).
 ## Common Commands (inside the container)
 ```bash
 # Compile and run a COBOL program manually
-cobc -x -o bin/hello src/hello.cob
-./bin/hello
+cobc -x -o bin/hello src/main.cob
+./bin/main
 ```
 
 ## Troubleshooting

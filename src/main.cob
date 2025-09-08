@@ -48,8 +48,16 @@
            DISPLAY "Welcome to inCollege by team Wyoming!".
            DISPLAY "Are you a new user? (Y/N)".
 
-           IF newUser = "Y" OR newUser = "y"
-               PERFORM newUserRegistration
+           DISPLAY accountCount " accounts currently exist.".
+           IF (newUser = "Y" OR newUser = "y") AND accountCount >= 5
+                DISPLAY "Maximum number of accounts reached. Cannot register new users."
+                CLOSE userInputFile
+                CLOSE userOutputFile
+                CLOSE accountFile
+                STOP RUN
+               ELSE
+                   IF newUser = "Y" OR newUser = "y"
+                       PERFORM newUserRegistration
            ELSE
                PERFORM existingUserLogin
            END-IF.
@@ -75,7 +83,7 @@
                        DISPLAY "Please try again. Password must be 8 or 12 characters long.".
                EXIT.
 
-           *> Existing user login process
+           *> Existing user login process (NEEDS TO BE IMPLEMENTED)
            existingUserLogin.
                DISPLAY "Please enter your login credentials.".
                DISPLAY "Login process completed.".
@@ -105,7 +113,4 @@
                    END-READ
                END-PERFORM.
                CLOSE accountFile.
-               DISPLAY "BOY IF YOU DONT"
-               DISPLAY accountCount " accounts found."
-
            EXIT.
