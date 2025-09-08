@@ -96,7 +96,6 @@
                    ELSE
                        MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
                        PERFORM displayAndWrite.
-                   END-IF.
                EXIT.
 
            *> Existing user login process (NEEDS TO BE IMPLEMENTED)
@@ -113,7 +112,7 @@
                 IF FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))  > 8 AND FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) < 12
                     MOVE "Y" TO passwordValid
                 ELSE
-                    MOVE "Invalid password length: " FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) ". Password must be between 8 and 12 characters." TO messageVar
+                    MOVE "Invalid password length. Password must be between 8 and 12 characters." TO messageVar
                     PERFORM displayAndWrite
                 END-IF.
 
