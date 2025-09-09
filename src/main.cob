@@ -1,3 +1,4 @@
+      >>SOURCE FORMAT FREE
        IDENTIFICATION DIVISION.
        PROGRAM-ID. HELLO.
        AUTHOR. TEAM WYOMING.
@@ -49,6 +50,11 @@
            01 currentUsername    PIC X(30).
            01 currentPassword    PIC X(30).
 
+          *>Post-login navigation variables
+          01 menuChoice       PIC X(100).
+          01 exitMenu         PIC X VALUE "N".
+          01 exitSkills       PIC X VALUE "N".
+
            *>Account counting and verification variables
            01 accountCount    PIC 9 VALUE 0.
            01 endOfFile       PIC X VALUE "N".
@@ -58,12 +64,9 @@
            OPEN INPUT userInputFile
            OPEN OUTPUT userOutputFile *>Overwrites existing output file , if any. Delete to append instead.
            READ userInputFile INTO newUser.
-           READ userInputFile INTO userName.
-           READ userInputFile INTO userPassword.
 
 
            PERFORM countAccounts.
-           OPEN EXTEND accountFile *> appends instead of overwriting.
 
            Move "Welcome to inCollege by team Wyoming!" TO messageVar
            PERFORM displayAndWrite.
@@ -77,7 +80,6 @@
                    DISPLAY "Maximum accounts reached. Cannot register."
                    CLOSE userInputFile
                    CLOSE userOutputFile
-                   CLOSE accountFile
                    STOP RUN
                ELSE
                    PERFORM newUserRegistration
@@ -89,7 +91,6 @@
            DISPLAY "Thank you for using inCollege".
            CLOSE userInputFile.
            CLOSE userOutputFile.
-           CLOSE accountFile.
            STOP RUN.
 
            *> *****************Subroutines to be called*****************
@@ -101,7 +102,7 @@
                DISPLAY messageVar
                MOVE messageVar TO userOutputRecord
                WRITE userOutputRecord
-               EXIT.
+           EXIT.
 
            *> Count existing accounts
            countAccounts.
@@ -174,9 +175,10 @@
                            MOVE currentAccount(31:60) TO currentPassword
 
                            *> Compare with input credentials
-                           IF inputUsername = currentUsername
-                           *>AND inputPassword = currentPassword
+                           IF inputUsername = currentUsername AND inputPassword = currentPassword
                                MOVE "Y" TO foundAccount
+                           ELSE
+                               DISPLAY "Account not found. Please try again."
                            END-IF
                    END-READ
                END-PERFORM
@@ -186,25 +188,16 @@
 
            *> New user registration process
            newUserRegistration.
+               READ userInputFile INTO userName.
+               READ userInputFile INTO userPassword.
                PERFORM validatePassword.
                IF passwordValid = "Y"
-                   *> Close file first, then check username
+                   OPEN EXTEND accountFile
+                   MOVE userName TO accountRecord(1:30)
+                   MOVE userPassword TO accountRecord(31:60)
+                   WRITE accountRecord
                    CLOSE accountFile
-                   MOVE userName TO inputUsername
-                   MOVE "DUMMY" TO inputPassword
-                   PERFORM validateLoginCredentials
-
-                   IF foundAccount = "N"
-                       *> Reopen for writing
-                       OPEN EXTEND accountFile
-                       MOVE userName TO accountRecord(1:30)
-                       MOVE userPassword TO accountRecord(31:60)
-                       WRITE accountRecord
-                       DISPLAY "Account Created."
-                   ELSE
-                       MOVE "Username already exists." TO messageVar
-                       PERFORM displayAndWrite
-                   END-IF
+                   DISPLAY "Account Created."
                ELSE
                    MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
                    PERFORM displayAndWrite
@@ -217,21 +210,133 @@
                PERFORM UNTIL loginSuccessful = "Y"
                    *> Read login credentials from input file
                    READ userInputFile INTO inputUsername
-                   READ userInputFile INTO inputPassword
+                       AT END
+                           MOVE "Y" TO loginSuccessful
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           READ userInputFile INTO inputPassword
+                               AT END
+                                   MOVE "Y" TO loginSuccessful
+                                   EXIT PARAGRAPH
+                               NOT AT END
+                                   *> Validate login credentials against stored accounts
+                                   PERFORM validateLoginCredentials
 
-                   *> Validate login credentials against stored accounts
-                   PERFORM validateLoginCredentials
-
-                   IF foundAccount = "Y"
-                       MOVE "Y" TO loginSuccessful
-                       MOVE "You have successfully logged in" TO messageVar
-                       PERFORM displayAndWrite
-                   ELSE
-                       MOVE "Incorrect username/password, please try again" TO messageVar
-                       PERFORM displayAndWrite
-                   END-IF
+                                   IF foundAccount = "Y"
+                                       MOVE "Y" TO loginSuccessful
+                                       MOVE "You have successfully logged in" TO messageVar
+                                       PERFORM displayAndWrite
+                                   ELSE
+                                       MOVE "Incorrect username/password, please try again" TO messageVar
+                                       PERFORM displayAndWrite
+                                   END-IF
+                           END-READ
+                   END-READ
                END-PERFORM
 
-               MOVE "Login process completed." TO messageVar
+               PERFORM postLoginMenu
+               EXIT.
+
+           *> Post-login main menu
+           postLoginMenu.
+               STRING "Welcome, " DELIMITED BY SIZE
+                      inputUsername DELIMITED BY SIZE
+                      "!" DELIMITED BY SIZE
+                   INTO messageVar
+               END-STRING
                PERFORM displayAndWrite
+
+               MOVE "N" TO exitMenu
+               PERFORM UNTIL exitMenu = "Y"
+                   MOVE "Search for a job" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Find someone you know" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Learn a new skill" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Enter your choice:" TO messageVar
+                   PERFORM displayAndWrite
+
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO exitMenu
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO menuChoice
+                   END-READ
+
+                   IF menuChoice = "Search for a job" OR menuChoice = "1"
+                       MOVE "Job search/internship is under construction." TO messageVar
+                       PERFORM displayAndWrite
+                   ELSE
+                       IF menuChoice = "Find someone you know" OR menuChoice = "2"
+                           MOVE "Find someone you know is under construction." TO messageVar
+                           PERFORM displayAndWrite
+                       ELSE
+                           IF menuChoice = "Learn a new skill" OR menuChoice = "3"
+                               PERFORM learnSkillsMenu
+                           END-IF
+                       END-IF
+                   END-IF
+               END-PERFORM
+               EXIT.
+
+           *> Learn a new skill submenu
+           learnSkillsMenu.
+               MOVE "N" TO exitSkills
+               PERFORM UNTIL exitSkills = "Y"
+                   MOVE "Learn a New Skill:" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Skill 1" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Skill 2" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Skill 3" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Skill 4" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Skill 5" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Go Back" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Enter your choice:" TO messageVar
+                   PERFORM displayAndWrite
+
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO exitSkills
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO menuChoice
+                   END-READ
+
+                   IF menuChoice = "Go Back" OR menuChoice = "6"
+                       MOVE "Y" TO exitSkills
+                   ELSE
+                       IF menuChoice = "Skill 1" OR menuChoice = "1"
+                           MOVE "This skill is under construction." TO messageVar
+                           PERFORM displayAndWrite
+                       ELSE
+                           IF menuChoice = "Skill 2" OR menuChoice = "2"
+                               MOVE "This skill is under construction." TO messageVar
+                               PERFORM displayAndWrite
+                           ELSE
+                               IF menuChoice = "Skill 3" OR menuChoice = "3"
+                                   MOVE "This skill is under construction." TO messageVar
+                                   PERFORM displayAndWrite
+                               ELSE
+                                   IF menuChoice = "Skill 4" OR menuChoice = "4"
+                                       MOVE "This skill is under construction." TO messageVar
+                                       PERFORM displayAndWrite
+                                   ELSE
+                                       IF menuChoice = "Skill 5" OR menuChoice = "5"
+                                           MOVE "This skill is under construction." TO messageVar
+                                           PERFORM displayAndWrite
+                                       END-IF
+                                   END-IF
+                               END-IF
+                           END-IF
+                       END-IF
+                   END-IF
+               END-PERFORM
                EXIT.

@@ -1,3 +1,2 @@
 Welcome to inCollege by team Wyoming!
 Are you a new user? (Y/N)
-Username already exists.
