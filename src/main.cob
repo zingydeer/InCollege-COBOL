@@ -31,13 +31,22 @@
            01 userPassword   PIC X(30).
            01 messageVar     PIC X(100).
 
-           *>Password validation variables
+           *>New Password validation variables
            01 passwordValid    PIC X VALUE "N".
            01 i                PIC 99 VALUE 1.
            01 upperFound       PIC X VALUE "N".
            01 digitFound       PIC X VALUE "N".
            01 specialFound     PIC X VALUE "N".
            01 char             PIC X.
+
+           *>Login validation variables
+           01 loginSuccessful    PIC X VALUE "N".
+           01 inputUsername      PIC X(30).
+           01 inputPassword      PIC X(30).
+           01 foundAccount       PIC X VALUE "N".
+           01 currentAccount     PIC X(100).
+           01 currentUsername    PIC X(30).
+           01 currentPassword    PIC X(30).
 
            *>Account counting and verification variables
            01 accountCount    PIC 9 VALUE 0.
@@ -84,57 +93,14 @@
 
            *> *****************Subroutines to be called*****************
 
-           *> New user registration process
-           newUserRegistration.
-               PERFORM validatePassword.
-                   IF passwordValid = "Y"
-                       MOVE userName TO accountRecord(1:30)
-                       MOVE userPassword TO accountRecord(31:60)
-                       WRITE accountRecord
-                       DISPLAY "Account Created."
-
-                   ELSE
-                       MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
-                       PERFORM displayAndWrite.
+           *> Display message and write to output file, needed for every user prompt
+           *> MOVE "message" to messageVar
+           *> displayAndWrite.
+           displayAndWrite.
+               DISPLAY messageVar
+               MOVE messageVar TO userOutputRecord
+               WRITE userOutputRecord
                EXIT.
-
-           *> Existing user login process (NEEDS TO BE IMPLEMENTED)
-           existingUserLogin.
-               MOVE "Please enter your login credentials." TO messageVar
-               PERFORM displayAndWrite.
-               MOVE "Login process completed." TO messageVar
-               PERFORM displayAndWrite.
-               EXIT.
-
-
-           *> Validate password length
-           validatePassword.
-                IF FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))  > 8 AND FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) < 12
-                    MOVE "Y" TO passwordValid
-                ELSE
-                    MOVE "Invalid password length. Password must be between 8 and 12 characters." TO messageVar
-                    PERFORM displayAndWrite
-                END-IF.
-
-               PERFORM Varying i FROM 1 BY 1 UNTIL i > FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))
-                   MOVE userPassword(i:1) TO char
-                   IF char >= "A" AND char <= "Z"
-                       MOVE "Y" TO upperFound
-                   END-IF
-                   IF char >= "0" AND char <= "9"
-                       MOVE "Y" TO digitFound
-                   END-IF
-                   IF char = "!" OR char = "@" OR char = "#" OR char = "$" OR char = "%" OR char = "^" OR char = "&" OR char = "*"
-                       MOVE "Y" TO specialFound
-                   END-IF
-                END-PERFORM.
-                   IF upperFound = "Y" AND digitFound = "Y" AND specialFound = "Y"
-                          MOVE "Y" TO passwordValid
-                   ELSE
-                       MOVE "Password must contain at least one uppercase letter, one special character, and one digit." TO messageVar
-                       PERFORM displayAndWrite
-                   END-IF.
-           EXIT.
 
            *> Count existing accounts
            countAccounts.
@@ -152,11 +118,96 @@
                CLOSE accountFile.
            EXIT.
 
-           *> Display message and write to output file, needed for every user prompt
-           *> MOVE "message" to messageVar
-           *> displayAndWrite.
-           displayAndWrite.
-               DISPLAY messageVar
-               MOVE messageVar TO userOutputRecord
-               WRITE userOutputRecord
+           *> Validate password length
+           validatePassword.
+               IF FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))  > 8 AND FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) < 12
+                   MOVE "Y" TO passwordValid
+               ELSE
+                   MOVE "Invalid password length. Password must be between 8 and 12 characters." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF.
+
+               PERFORM Varying i FROM 1 BY 1 UNTIL i > FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))
+                   MOVE userPassword(i:1) TO char
+                   IF char >= "A" AND char <= "Z"
+                       MOVE "Y" TO upperFound
+                   END-IF
+                   IF char >= "0" AND char <= "9"
+                       MOVE "Y" TO digitFound
+                   END-IF
+                   IF char = "!" OR char = "@" OR char = "#" OR char = "$" OR char = "%" OR char = "^" OR char = "&" OR char = "*"
+                       MOVE "Y" TO specialFound
+                   END-IF
+               END-PERFORM.
+               IF upperFound = "Y" AND digitFound = "Y" AND specialFound = "Y"
+                   MOVE "Y" TO passwordValid
+               ELSE
+                   MOVE "Password must contain at least one uppercase letter, one special character, and one digit." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF.
+           EXIT.
+
+           validateLoginCredentials.
+               MOVE "N" TO foundAccount
+               MOVE "N" TO endOfFile
+
+               *> Open account file for reading
+               OPEN INPUT accountFile
+
+               *> Read through all accounts to find match
+               PERFORM UNTIL endOfFile = "Y"
+                   READ accountFile INTO currentAccount
+                       AT END
+                           MOVE "Y" TO endOfFile
+                       NOT AT END
+                           *> Extract username and password from account record
+                           MOVE currentAccount(1:30) TO currentUsername
+                           MOVE currentAccount(31:60) TO currentPassword
+
+                           *> Compare with input credentials
+                           IF inputUsername = currentUsername AND inputPassword = currentPassword
+                               MOVE "Y" TO foundAccount
+                           END-IF
+                   END-READ
+               END-PERFORM
+
+               CLOSE accountFile
+
+           *> New user registration process
+           newUserRegistration.
+               PERFORM validatePassword.
+                   IF passwordValid = "Y"
+                       MOVE userName TO accountRecord(1:30)
+                       MOVE userPassword TO accountRecord(31:60)
+                       WRITE accountRecord
+                       DISPLAY "Account Created."
+
+                   ELSE
+                       MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
+                       PERFORM displayAndWrite.
+               EXIT.
+
+           *> Existing user login process (NEEDS TO BE IMPLEMENTED)
+           existingUserLogin.
+               MOVE "N" TO loginSuccessful
+               PERFORM UNTIL loginSuccessful = "Y"
+                   *> Read login credentials from input file
+                   READ userInputFile INTO inputUsername
+                   READ userInputFile INTO inputPassword
+
+                   *> Validate login credentials against stored accounts
+                   PERFORM validateLoginCredentials
+
+                   IF foundAccount = "Y"
+                       MOVE "Y" TO loginSuccessful
+                       MOVE "You have successfully logged in" TO messageVar
+                       PERFORM displayAndWrite
+                   ELSE
+                       MOVE "Incorrect username/password, please try again" TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               END-PERFORM
+
+               MOVE "Login process completed." TO messageVar
+               PERFORM displayAndWrite.
                EXIT.
