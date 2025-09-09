@@ -38,6 +38,7 @@
            01 digitFound       PIC X VALUE "N".
            01 specialFound     PIC X VALUE "N".
            01 char             PIC X.
+           01 passwordLength   PIC 99.
 
            *>Login validation variables
            01 loginSuccessful    PIC X VALUE "N".
@@ -73,7 +74,7 @@
            DISPLAY accountCount " accounts currently exist.".*>Debug, can be removed
            IF newUser = "Y" OR newUser = "y"
                IF accountCount >= 5
-                   DISPLAY "Maximum number of accounts reached. Cannot register new users."
+                   DISPLAY "Maximum accounts reached. Cannot register."
                    CLOSE userInputFile
                    CLOSE userOutputFile
                    CLOSE accountFile
@@ -120,29 +121,37 @@
 
            *> Validate password length
            validatePassword.
-               IF FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))  > 8 AND FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) < 12
-                   MOVE "Y" TO passwordValid
-               ELSE
-                   MOVE "Invalid password length. Password must be between 8 and 12 characters." TO messageVar
-                   PERFORM displayAndWrite
-               END-IF.
+               MOVE FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) TO passwordLength
+               IF passwordLength >= 8 AND passwordLength <= 12
+                *> Reset validation flags
+                   MOVE "N" TO passwordValid
+                   MOVE "N" TO upperFound
+                   MOVE "N" TO digitFound
+                   MOVE "N" TO specialFound
 
-               PERFORM Varying i FROM 1 BY 1 UNTIL i > FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING))
-                   MOVE userPassword(i:1) TO char
-                   IF char >= "A" AND char <= "Z"
-                       MOVE "Y" TO upperFound
+                   *> Check character requirements
+                   PERFORM Varying i FROM 1 BY 1 UNTIL i > passwordLength
+                       MOVE userPassword(i:1) TO char
+                       IF char >= "A" AND char <= "Z"
+                           MOVE "Y" TO upperFound
+                       END-IF
+                       IF char >= "0" AND char <= "9"
+                           MOVE "Y" TO digitFound
+                       END-IF
+                       IF char = "!" OR char = "@" OR char = "#" OR char = "$" OR char = "%" OR char = "^" OR char = "&" OR char = "*"
+                           MOVE "Y" TO specialFound
+                       END-IF
+                   END-PERFORM
+
+                   *> Character validation logic
+                   IF upperFound = "Y" AND digitFound = "Y" AND specialFound = "Y"
+                       MOVE "Y" TO passwordValid
+                   ELSE
+                       MOVE "Password must contain uppercase, digit, and special character." TO messageVar
+                       PERFORM displayAndWrite
                    END-IF
-                   IF char >= "0" AND char <= "9"
-                       MOVE "Y" TO digitFound
-                   END-IF
-                   IF char = "!" OR char = "@" OR char = "#" OR char = "$" OR char = "%" OR char = "^" OR char = "&" OR char = "*"
-                       MOVE "Y" TO specialFound
-                   END-IF
-               END-PERFORM.
-               IF upperFound = "Y" AND digitFound = "Y" AND specialFound = "Y"
-                   MOVE "Y" TO passwordValid
                ELSE
-                   MOVE "Password must contain at least one uppercase letter, one special character, and one digit." TO messageVar
+                   MOVE "Invalid password length. Must be 8-12 characters." TO messageVar
                    PERFORM displayAndWrite
                END-IF.
            EXIT.
@@ -165,26 +174,41 @@
                            MOVE currentAccount(31:60) TO currentPassword
 
                            *> Compare with input credentials
-                           IF inputUsername = currentUsername AND inputPassword = currentPassword
+                           IF inputUsername = currentUsername
+                           *>AND inputPassword = currentPassword
                                MOVE "Y" TO foundAccount
                            END-IF
                    END-READ
                END-PERFORM
 
                CLOSE accountFile
+               EXIT.
 
            *> New user registration process
            newUserRegistration.
                PERFORM validatePassword.
-                   IF passwordValid = "Y"
+               IF passwordValid = "Y"
+                   *> Close file first, then check username
+                   CLOSE accountFile
+                   MOVE userName TO inputUsername
+                   MOVE "DUMMY" TO inputPassword
+                   PERFORM validateLoginCredentials
+
+                   IF foundAccount = "N"
+                       *> Reopen for writing
+                       OPEN EXTEND accountFile
                        MOVE userName TO accountRecord(1:30)
                        MOVE userPassword TO accountRecord(31:60)
                        WRITE accountRecord
                        DISPLAY "Account Created."
-
                    ELSE
-                       MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
-                       PERFORM displayAndWrite.
+                       MOVE "Username already exists." TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               ELSE
+                   MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
                EXIT.
 
            *> Existing user login process (NEEDS TO BE IMPLEMENTED)
@@ -209,5 +233,5 @@
                END-PERFORM
 
                MOVE "Login process completed." TO messageVar
-               PERFORM displayAndWrite.
+               PERFORM displayAndWrite
                EXIT.
