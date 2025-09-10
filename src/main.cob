@@ -107,7 +107,10 @@
 
                                            IF loginInput = "Y" OR loginInput = "y"
                                                IF accountCount >= 5
-                                                   DISPLAY "All permitted accounts have been created, please come back later."
+                                                   MOVE "All permitted accounts have been created, please come back later." TO messageVar
+                                                   PERFORM displayAndWrite
+                                                   MOVE "Thank you for using inCollege" TO messageVar
+                                                   PERFORM displayAndWrite
                                                    CLOSE userInputFile
                                                    CLOSE userOutputFile
                                                    STOP RUN
@@ -230,6 +233,7 @@
            *> New user registration process
            newUserRegistration.
                READ userInputFile INTO userName.
+               MOVE userName TO inputUsername.
                READ userInputFile INTO userPassword.
                PERFORM validatePassword.
                IF passwordValid = "Y"

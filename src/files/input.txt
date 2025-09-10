@@ -1,20 +1,3 @@
-X
-L
-Y
-student10
-Passw0rd!
-Learn a new skill
-1
-6
-6
-L
-Y
-student20
-Passw0rd!
-Learn a new skill
-1
-6
-6
 L
 Y
 student30
@@ -24,16 +7,8 @@ Learn a new skill
 6
 6
 L
-Y
-student40
-Passw0rd!
-Learn a new skill
-1
-6
-6
-L
-Y
-student50
+N
+student20
 Passw0rd!
 Learn a new skill
 1
