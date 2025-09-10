@@ -67,7 +67,7 @@
 
        PROCEDURE DIVISION.
            OPEN INPUT userInputFile
-           OPEN EXTEND userOutputFile
+           OPEN OUTPUT userOutputFile
 
            Move "Welcome to inCollege by Team Wyoming!" TO messageVar
            PERFORM displayAndWrite.
@@ -111,7 +111,9 @@
                                                    PERFORM displayAndWrite
                                                ELSE
                                                    PERFORM newUserRegistration
-                                                   PERFORM postLoginMenu
+                                                   IF passwordValid = "Y"
+                                                       PERFORM postLoginMenu
+                                                   END-IF
                                                END-IF
                                            ELSE
                                                IF loginInput = "N" OR loginInput = "n"
@@ -230,7 +232,7 @@
                READ userInputFile INTO userName.
                MOVE userName TO inputUsername.
                READ userInputFile INTO userPassword.
-               PERFORM validatePassword.
+               PERFORM validatePassword
                IF passwordValid = "Y"
                    OPEN EXTEND accountFile
                    MOVE userName TO accountRecord(1:30)
@@ -238,9 +240,10 @@
                    WRITE accountRecord
                    CLOSE accountFile
                    DISPLAY "Account Created."
+                   *> You can add further progression logic here
                ELSE
-                   MOVE "Please try again. Password must be 8 or 12 characters long." TO messageVar
-                   PERFORM displayAndWrite
+                   DISPLAY "Password does not meet requirements. Please try again."
+                   *> Optionally, you can PERFORM newUserRegistration again or exit
                END-IF
                EXIT.
 
