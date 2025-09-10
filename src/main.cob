@@ -27,7 +27,7 @@
 
          WORKING-STORAGE SECTION.
            *>Variables for user input and output
-           01 newUser        PIC X.
+           01 loginInput        PIC X.
            01 userName       PIC X(30).
            01 userPassword   PIC X(30).
            01 messageVar     PIC X(100).
@@ -50,10 +50,15 @@
            01 currentUsername    PIC X(30).
            01 currentPassword    PIC X(30).
 
-          *>Post-login navigation variables
-          01 menuChoice       PIC X(100).
-          01 exitMenu         PIC X VALUE "N".
-          01 exitSkills       PIC X VALUE "N".
+           *> Pre-Login navigation variables
+           01 quitProgram     PIC X VALUE "N".
+
+           *>Post-login navigation variables
+           01 menuChoice       PIC X(100).
+           01 exitMenu         PIC X VALUE "N".
+           01 exitSkills       PIC X VALUE "N".
+           01 exitSearch       PIC X VALUE "N".
+           01 exitSomeone      PIC X VALUE "N".
 
            *>Account counting and verification variables
            01 accountCount    PIC 9 VALUE 0.
@@ -62,33 +67,66 @@
 
        PROCEDURE DIVISION.
            OPEN INPUT userInputFile
-           OPEN OUTPUT userOutputFile *>Overwrites existing output file , if any. Delete to append instead.
-           READ userInputFile INTO newUser.
+           OPEN EXTEND userOutputFile
 
-
-           PERFORM countAccounts.
-
-           Move "Welcome to inCollege by team Wyoming!" TO messageVar
-           PERFORM displayAndWrite.
-           MOVE "Are you a new user? (Y/N)" TO messageVar
+           Move "Welcome to inCollege by Team Wyoming!" TO messageVar
            PERFORM displayAndWrite.
 
+           MOVE "N" TO quitProgram
+           PERFORM UNTIL quitProgram = "Y"
+               PERFORM countAccounts
 
-           DISPLAY accountCount " accounts currently exist.".*>Debug, can be removed
-           IF newUser = "Y" OR newUser = "y"
-               IF accountCount >= 5
-                   DISPLAY "Maximum accounts reached. Cannot register."
-                   CLOSE userInputFile
-                   CLOSE userOutputFile
-                   STOP RUN
-               ELSE
-                   PERFORM newUserRegistration
-               END-IF
-           ELSE
-               PERFORM existingUserLogin
-           END-IF
+               MOVE "Login or Quit? (L/Q)" TO messageVar
+               PERFORM displayAndWrite
 
-           DISPLAY "Thank you for using inCollege".
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO quitProgram
+                   NOT AT END
+                       MOVE userInputRecord TO loginInput
+
+                       *> Handle quit option
+                       IF loginInput = "Q" OR loginInput = "q"
+                           MOVE "Y" TO quitProgram
+                           MOVE "Thank you for using inCollege" TO messageVar
+                           PERFORM displayAndWrite
+                       ELSE
+                           *> Handle Delete account.txt option (secret option)
+                           IF loginInput = "X" OR loginInput = "x"
+                               PERFORM clearAccountsFile
+                           ELSE
+                               IF loginInput = "L" OR loginInput = "l"
+                                   MOVE "Are you a new user? (Y/N)" TO messageVar
+                                   PERFORM displayAndWrite
+
+                                   READ userInputFile INTO userInputRecord
+                                       AT END
+                                           MOVE "Y" TO quitProgram
+                                       NOT AT END
+                                           MOVE userInputRecord TO loginInput
+
+                                           IF loginInput = "Y" OR loginInput = "y"
+                                               IF accountCount >= 5
+                                                   DISPLAY "All permitted accounts have been created, please come back later."
+                                                   CLOSE userInputFile
+                                                   CLOSE userOutputFile
+                                                   STOP RUN
+                                               ELSE
+                                                   PERFORM newUserRegistration
+                                                   PERFORM postLoginMenu
+                                               END-IF
+                                           ELSE
+                                               IF loginInput = "N" OR loginInput = "n"
+                                                   PERFORM existingUserLogin
+                                               END-IF
+                                           END-IF
+                                   END-READ
+                               END-IF
+                           END-IF
+                       END-IF
+               END-READ
+           END-PERFORM
+
            CLOSE userInputFile.
            CLOSE userOutputFile.
            STOP RUN.
@@ -177,11 +215,14 @@
                            *> Compare with input credentials
                            IF inputUsername = currentUsername AND inputPassword = currentPassword
                                MOVE "Y" TO foundAccount
-                           ELSE
-                               DISPLAY "Account not found. Please try again."
                            END-IF
                    END-READ
                END-PERFORM
+
+               IF foundAccount = "N"
+                   MOVE "Account not found. Please try again." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
 
                CLOSE accountFile
                EXIT.
@@ -248,33 +289,39 @@
 
                MOVE "N" TO exitMenu
                PERFORM UNTIL exitMenu = "Y"
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO exitMenu
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO menuChoice
+               END-READ
+
                    MOVE "Search for a job" TO messageVar
                    PERFORM displayAndWrite
                    MOVE "Find someone you know" TO messageVar
                    PERFORM displayAndWrite
                    MOVE "Learn a new skill" TO messageVar
                    PERFORM displayAndWrite
-                   MOVE "Enter your choice:" TO messageVar
+                   MOVE "Log out" TO messageVar
                    PERFORM displayAndWrite
 
-                   READ userInputFile INTO userInputRecord
-                       AT END
-                           MOVE "Y" TO exitMenu
-                           EXIT PARAGRAPH
-                       NOT AT END
-                           MOVE userInputRecord TO menuChoice
-                   END-READ
 
                    IF menuChoice = "Search for a job" OR menuChoice = "1"
-                       MOVE "Job search/internship is under construction." TO messageVar
-                       PERFORM displayAndWrite
+                       PERFORM searchForJobMenu
                    ELSE
                        IF menuChoice = "Find someone you know" OR menuChoice = "2"
-                           MOVE "Find someone you know is under construction." TO messageVar
-                           PERFORM displayAndWrite
+                           PERFORM findSomeoneMenu
                        ELSE
                            IF menuChoice = "Learn a new skill" OR menuChoice = "3"
                                PERFORM learnSkillsMenu
+                            ELSE
+                               IF menuChoice = "Log out" OR menuChoice = "6"
+                                   MOVE "Y" TO exitMenu
+                               ELSE
+                                   MOVE "Invalid choice, please try again." TO messageVar
+                                   PERFORM displayAndWrite
                            END-IF
                        END-IF
                    END-IF
@@ -283,6 +330,7 @@
 
            *> Learn a new skill submenu
            learnSkillsMenu.
+
                MOVE "N" TO exitSkills
                PERFORM UNTIL exitSkills = "Y"
                    MOVE "Learn a New Skill:" TO messageVar
@@ -302,13 +350,14 @@
                    MOVE "Enter your choice:" TO messageVar
                    PERFORM displayAndWrite
 
-                   READ userInputFile INTO userInputRecord
-                       AT END
-                           MOVE "Y" TO exitSkills
-                           EXIT PARAGRAPH
-                       NOT AT END
-                           MOVE userInputRecord TO menuChoice
-                   END-READ
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO exitSkills
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO menuChoice
+               END-READ
 
                    IF menuChoice = "Go Back" OR menuChoice = "6"
                        MOVE "Y" TO exitSkills
@@ -340,3 +389,63 @@
                    END-IF
                END-PERFORM
                EXIT.
+
+           *> Search for job functionality (to be implemented)
+           searchForJobMenu.
+               MOVE "Search for a job functionality is under construction." TO messageVar
+               PERFORM displayAndWrite
+
+               MOVE "N" TO exitSearch
+               PERFORM UNTIL exitSearch = "Y"
+
+                   MOVE "Go Back" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Enter your choice:" TO messageVar
+                   PERFORM displayAndWrite
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO exitSearch
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO menuChoice
+               END-READ
+
+               IF menuChoice = "Go Back" OR menuChoice = "6"
+                   MOVE "Y" TO exitSearch
+               END-IF
+               END-PERFORM
+               EXIT.
+
+           *> Find someone you know functionality (to be implemented)
+           findSomeoneMenu.
+                MOVE "Find someone you know functionality is under construction." TO messageVar
+                PERFORM displayAndWrite
+
+                MOVE "N" TO exitSomeone
+                PERFORM UNTIL exitSomeone = "Y"
+
+                     MOVE "Go Back" TO messageVar
+                     PERFORM displayAndWrite
+                     MOVE "Enter your choice:" TO messageVar
+                     PERFORM displayAndWrite
+
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO exitSomeone
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO menuChoice
+                   END-READ
+
+                      IF menuChoice = "Go Back" OR menuChoice = "6"
+                           MOVE "Y" TO exitSomeone
+                      END-IF
+
+                END-PERFORM
+           EXIT.
+
+           clearAccountsFile.
+               OPEN OUTPUT accountFile
+               CLOSE accountFile
+           EXIT.

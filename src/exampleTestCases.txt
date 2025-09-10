@@ -1,0 +1,64 @@
+These are just a place you can save test cases to be used later for the input.txt
+
+/// Deletes all accounts
+X
+
+/// Login
+L
+
+/// Quit
+Q
+
+// Deketes all accounts and lets a user create an account. This ends on
+// The login page and is INCOMPLETE.     use as template
+X
+L
+Y
+student30
+Passw0rd!
+
+
+////// Complete test case example with implementation above,
+////// Deletes all accounts, creates 5 new ones.
+X
+L
+Y
+student10
+Passw0rd!
+Learn a new skill
+1
+6
+6
+L
+Y
+student20
+Passw0rd!
+Learn a new skill
+1
+6
+6
+L
+Y
+student30
+Passw0rd!
+Learn a new skill
+1
+6
+6
+L
+Y
+student40
+Passw0rd!
+Learn a new skill
+1
+6
+6
+L
+Y
+student50
+Passw0rd!
+Learn a new skill
+1
+6
+6
+Q

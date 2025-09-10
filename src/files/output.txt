@@ -1,2 +1,559 @@
 Welcome to inCollege by team Wyoming!
 Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student20                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Find someone you know functionality is under construction.
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student20                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Find someone you know functionality is under construction.
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Login or Quit? (L/Q)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student10                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student10                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Enter your choice:
+Log out
+Invalid choice, please try again.
+Login or Quit? (L/Q)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student10                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Invalid choice, please try again.
+Login or Quit? (L/Q)
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student20                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student40                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student40                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
+Welcome to inCollege by Team Wyoming!
+Login or Quit? (L/Q)
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome,                               !
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
