@@ -109,11 +109,6 @@
                                                IF accountCount >= 5
                                                    MOVE "All permitted accounts have been created, please come back later." TO messageVar
                                                    PERFORM displayAndWrite
-                                                   MOVE "Thank you for using inCollege" TO messageVar
-                                                   PERFORM displayAndWrite
-                                                   CLOSE userInputFile
-                                                   CLOSE userOutputFile
-                                                   STOP RUN
                                                ELSE
                                                    PERFORM newUserRegistration
                                                    PERFORM postLoginMenu

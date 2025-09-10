@@ -1,16 +1,9 @@
 L
 Y
-student30
-Passw0rd!
-Learn a new skill
-1
-6
-6
 L
 N
-student20
+student30
 Passw0rd!
-Learn a new skill
 1
 6
 6
