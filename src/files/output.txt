@@ -53,10 +53,15 @@ View My Profile
 Log out
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 === PERSONAL INFORMATION ===
 Enter First Name (Required):
@@ -68,18 +73,28 @@ Enter About Me (Optional):
 Personal information entered successfully!
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 Profile saved successfully!
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 Search for a job
 Find someone you know
@@ -102,33 +117,60 @@ View My Profile
 Log out
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
-=== PERSONAL INFORMATION ===
-Enter First Name (Required):
-Enter Last Name (Required):
-Enter University/College (Required):
-Enter Major (Required):
-Enter Graduation Year (Required, 4 digits):
-Enter About Me (Optional):
-Personal information entered successfully!
+=== UPDATE PERSONAL INFORMATION ===
+Current First Name:
+Jane
+Enter new First Name (or press Enter to keep current):
+Current Last Name:
+Smith
+Enter new Last Name (or press Enter to keep current):
+Current University:
+Tech University
+Enter new University/College (or press Enter to keep current):
+Current Major:
+Software Engineering
+Enter new Major (or press Enter to keep current):
+Current Graduation Year:
+2026
+Enter new Graduation Year (or press Enter to keep current):
+Current About Me:
+Experienced developer
+Enter new About Me (or press Enter to keep current):
+Personal information updated successfully!
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 Profile saved successfully!
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
-2. Add Experience Entry
-3. Add Education Entry
-4. Save Profile
-5. Go Back
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 Search for a job
 Find someone you know

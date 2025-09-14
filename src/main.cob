@@ -98,6 +98,12 @@
            01 profileChoice       PIC X(100).
            01 profileExit         PIC X VALUE "N".
 
+           *>Profile update variables
+           01 updateChoice        PIC X(100).
+           01 entryIndex          PIC 9 VALUE 0.
+           01 j                   PIC 9 VALUE 0.
+           01 tempString          PIC X(100).
+
 
        PROCEDURE DIVISION.
            OPEN INPUT userInputFile
@@ -507,13 +513,23 @@
                    PERFORM displayAndWrite
                    MOVE "1. Enter Personal Information" TO messageVar
                    PERFORM displayAndWrite
-                   MOVE "2. Add Experience Entry" TO messageVar
+                   MOVE "2. Update Personal Information" TO messageVar
                    PERFORM displayAndWrite
-                   MOVE "3. Add Education Entry" TO messageVar
+                   MOVE "3. Add Experience Entry" TO messageVar
                    PERFORM displayAndWrite
-                   MOVE "4. Save Profile" TO messageVar
+                   MOVE "4. Update Experience Entry" TO messageVar
                    PERFORM displayAndWrite
-                   MOVE "5. Go Back" TO messageVar
+                   MOVE "5. Delete Experience Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "6. Add Education Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "7. Update Education Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "8. Delete Education Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "9. Save Profile" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "10. Go Back" TO messageVar
                    PERFORM displayAndWrite
                    MOVE "Enter your choice:" TO messageVar
                    PERFORM displayAndWrite
@@ -529,20 +545,40 @@
                    IF profileChoice = "1" OR profileChoice = "Enter Personal Information"
                        PERFORM enterPersonalInfo
                    ELSE
-                       IF profileChoice = "2" OR profileChoice = "Add Experience Entry"
-                           PERFORM addExperienceEntry
+                       IF profileChoice = "2" OR profileChoice = "Update Personal Information"
+                           PERFORM updatePersonalInfo
                        ELSE
-                           IF profileChoice = "3" OR profileChoice = "Add Education Entry"
-                               PERFORM addEducationEntry
+                           IF profileChoice = "3" OR profileChoice = "Add Experience Entry"
+                               PERFORM addExperienceEntry
                            ELSE
-                               IF profileChoice = "4" OR profileChoice = "Save Profile"
-                                   PERFORM saveProfile
+                               IF profileChoice = "4" OR profileChoice = "Update Experience Entry"
+                                   PERFORM updateExperienceEntry
                                ELSE
-                                   IF profileChoice = "5" OR profileChoice = "Go Back"
-                                       MOVE "Y" TO profileExit
+                                   IF profileChoice = "5" OR profileChoice = "Delete Experience Entry"
+                                       PERFORM deleteExperienceEntry
                                    ELSE
-                                       MOVE "Invalid choice, please try again." TO messageVar
-                                       PERFORM displayAndWrite
+                                       IF profileChoice = "6" OR profileChoice = "Add Education Entry"
+                                           PERFORM addEducationEntry
+                                       ELSE
+                                           IF profileChoice = "7" OR profileChoice = "Update Education Entry"
+                                               PERFORM updateEducationEntry
+                                           ELSE
+                                               IF profileChoice = "8" OR profileChoice = "Delete Education Entry"
+                                                   PERFORM deleteEducationEntry
+                                               ELSE
+                                                   IF profileChoice = "9" OR profileChoice = "Save Profile"
+                                                       PERFORM saveProfile
+                                                   ELSE
+                                                       IF profileChoice = "10" OR profileChoice = "Go Back"
+                                                           MOVE "Y" TO profileExit
+                                                       ELSE
+                                                           MOVE "Invalid choice, please try again." TO messageVar
+                                                           PERFORM displayAndWrite
+                                                       END-IF
+                                                   END-IF
+                                               END-IF
+                                           END-IF
+                                       END-IF
                                    END-IF
                                END-IF
                            END-IF
@@ -790,11 +826,11 @@
                IF experienceCount > 0
                    MOVE "Experience:" TO messageVar
                    PERFORM displayAndWrite
-                   PERFORM VARYING i FROM 1 BY 1 UNTIL i > experienceCount
+                   PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
                        STRING "  " DELIMITED BY SIZE
-                              expTitle(i) DELIMITED BY SIZE
+                              expTitle(j) DELIMITED BY SIZE
                               " at " DELIMITED BY SIZE
-                              expCompany(i) DELIMITED BY SIZE
+                              expCompany(j) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
                               expDates(i) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
@@ -814,11 +850,11 @@
                IF educationCount > 0
                    MOVE "Education:" TO messageVar
                    PERFORM displayAndWrite
-                   PERFORM VARYING i FROM 1 BY 1 UNTIL i > educationCount
+                   PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
                        STRING "  " DELIMITED BY SIZE
-                              eduDegree(i) DELIMITED BY SIZE
+                              eduDegree(j) DELIMITED BY SIZE
                               " from " DELIMITED BY SIZE
-                              eduUniversity(i) DELIMITED BY SIZE
+                              eduUniversity(j) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
                               eduYears(i) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
@@ -868,4 +904,422 @@
                    END-READ
                END-PERFORM
                CLOSE profileFile
+               EXIT.
+
+           *> Update Personal Information
+           updatePersonalInfo.
+               PERFORM loadProfile
+               MOVE "=== UPDATE PERSONAL INFORMATION ===" TO messageVar
+               PERFORM displayAndWrite
+
+               MOVE "Current First Name: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE firstName TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new First Name (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO firstName
+                       END-IF
+               END-READ
+
+               MOVE "Current Last Name: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE lastName TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new Last Name (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO lastName
+                       END-IF
+               END-READ
+
+               MOVE "Current University: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE university TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new University/College (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO university
+                       END-IF
+               END-READ
+
+               MOVE "Current Major: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE major TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new Major (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO major
+                       END-IF
+               END-READ
+
+               MOVE "Current Graduation Year: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE graduationYear TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new Graduation Year (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO tempYear
+                           PERFORM validateYear
+                           IF yearValid = "Y"
+                               MOVE tempYear TO graduationYear
+                           ELSE
+                               MOVE "Invalid year. Keeping current year." TO messageVar
+                               PERFORM displayAndWrite
+                           END-IF
+                       END-IF
+               END-READ
+
+               MOVE "Current About Me: " TO messageVar
+               PERFORM displayAndWrite
+               MOVE aboutMe TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Enter new About Me (or press Enter to keep current):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       IF userInputRecord NOT = SPACES
+                           MOVE userInputRecord TO aboutMe
+                       END-IF
+               END-READ
+
+               MOVE "Personal information updated successfully!" TO messageVar
+               PERFORM displayAndWrite
+               EXIT.
+
+           *> Update Experience Entry
+           updateExperienceEntry.
+               PERFORM loadProfile
+               IF experienceCount = 0
+                   MOVE "No experience entries to update." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               MOVE "=== UPDATE EXPERIENCE ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Current Experience Entries:" TO messageVar
+               PERFORM displayAndWrite
+
+               PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
+                   STRING "  " DELIMITED BY SIZE
+                          i DELIMITED BY SIZE
+                          ". " DELIMITED BY SIZE
+                          expTitle(j) DELIMITED BY SIZE
+                          " at " DELIMITED BY SIZE
+                          expCompany(j) DELIMITED BY SIZE
+                       INTO messageVar
+                   END-STRING
+                   PERFORM displayAndWrite
+               END-PERFORM
+
+               MOVE "Enter the number of the entry to update (1-" TO messageVar
+               PERFORM displayAndWrite
+               MOVE experienceCount TO messageVar
+               PERFORM displayAndWrite
+               MOVE "):" TO messageVar
+               PERFORM displayAndWrite
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO updateChoice
+               END-READ
+
+               MOVE 0 TO entryIndex
+               MOVE updateChoice(1:1) TO entryIndex
+               IF entryIndex >= 1 AND entryIndex <= experienceCount
+                   MOVE "Enter new Job Title (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO expTitle(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Enter new Company/Organization (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO expCompany(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Enter new Dates (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO expDates(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Enter new Description (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO expDesc(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Experience entry updated successfully!" TO messageVar
+                   PERFORM displayAndWrite
+               ELSE
+                   MOVE "Invalid entry number." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
+               EXIT.
+
+           *> Delete Experience Entry
+           deleteExperienceEntry.
+               PERFORM loadProfile
+               IF experienceCount = 0
+                   MOVE "No experience entries to delete." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               MOVE "=== DELETE EXPERIENCE ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Current Experience Entries:" TO messageVar
+               PERFORM displayAndWrite
+
+               PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
+                   STRING "  " DELIMITED BY SIZE
+                          i DELIMITED BY SIZE
+                          ". " DELIMITED BY SIZE
+                          expTitle(j) DELIMITED BY SIZE
+                          " at " DELIMITED BY SIZE
+                          expCompany(j) DELIMITED BY SIZE
+                       INTO messageVar
+                   END-STRING
+                   PERFORM displayAndWrite
+               END-PERFORM
+
+               MOVE "Enter the number of the entry to delete (1-" TO messageVar
+               PERFORM displayAndWrite
+               MOVE experienceCount TO messageVar
+               PERFORM displayAndWrite
+               MOVE "):" TO messageVar
+               PERFORM displayAndWrite
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO updateChoice
+               END-READ
+
+               MOVE 0 TO entryIndex
+               MOVE updateChoice(1:1) TO entryIndex
+               IF entryIndex >= 1 AND entryIndex <= experienceCount
+                   PERFORM VARYING j FROM entryIndex BY 1 UNTIL j >= experienceCount
+                       MOVE expTitle(j + 1) TO expTitle(j)
+                       MOVE expCompany(j + 1) TO expCompany(j)
+                       MOVE expDates(j + 1) TO expDates(j)
+                       MOVE expDesc(j + 1) TO expDesc(j)
+                   END-PERFORM
+                   SUBTRACT 1 FROM experienceCount
+                   MOVE "Experience entry deleted successfully!" TO messageVar
+                   PERFORM displayAndWrite
+               ELSE
+                   MOVE "Invalid entry number." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
+               EXIT.
+
+           *> Update Education Entry
+           updateEducationEntry.
+               PERFORM loadProfile
+               IF educationCount = 0
+                   MOVE "No education entries to update." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               MOVE "=== UPDATE EDUCATION ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Current Education Entries:" TO messageVar
+               PERFORM displayAndWrite
+
+               PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
+                   STRING "  " DELIMITED BY SIZE
+                          i DELIMITED BY SIZE
+                          ". " DELIMITED BY SIZE
+                          eduDegree(j) DELIMITED BY SIZE
+                          " from " DELIMITED BY SIZE
+                          eduUniversity(j) DELIMITED BY SIZE
+                       INTO messageVar
+                   END-STRING
+                   PERFORM displayAndWrite
+               END-PERFORM
+
+               MOVE "Enter the number of the entry to update (1-" TO messageVar
+               PERFORM displayAndWrite
+               MOVE educationCount TO messageVar
+               PERFORM displayAndWrite
+               MOVE "):" TO messageVar
+               PERFORM displayAndWrite
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO updateChoice
+               END-READ
+
+               MOVE 0 TO entryIndex
+               MOVE updateChoice(1:1) TO entryIndex
+               IF entryIndex >= 1 AND entryIndex <= educationCount
+                   MOVE "Enter new Degree (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO eduDegree(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Enter new University/College (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO eduUniversity(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Enter new Years Attended (or press Enter to keep current):" TO messageVar
+                   PERFORM displayAndWrite
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           IF userInputRecord NOT = SPACES
+                               MOVE userInputRecord TO eduYears(entryIndex)
+                           END-IF
+                   END-READ
+
+                   MOVE "Education entry updated successfully!" TO messageVar
+                   PERFORM displayAndWrite
+               ELSE
+                   MOVE "Invalid entry number." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
+               EXIT.
+
+           *> Delete Education Entry
+           deleteEducationEntry.
+               PERFORM loadProfile
+               IF educationCount = 0
+                   MOVE "No education entries to delete." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               MOVE "=== DELETE EDUCATION ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+               MOVE "Current Education Entries:" TO messageVar
+               PERFORM displayAndWrite
+
+               PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
+                   STRING "  " DELIMITED BY SIZE
+                          i DELIMITED BY SIZE
+                          ". " DELIMITED BY SIZE
+                          eduDegree(j) DELIMITED BY SIZE
+                          " from " DELIMITED BY SIZE
+                          eduUniversity(j) DELIMITED BY SIZE
+                       INTO messageVar
+                   END-STRING
+                   PERFORM displayAndWrite
+               END-PERFORM
+
+               MOVE "Enter the number of the entry to delete (1-" TO messageVar
+               PERFORM displayAndWrite
+               MOVE educationCount TO messageVar
+               PERFORM displayAndWrite
+               MOVE "):" TO messageVar
+               PERFORM displayAndWrite
+
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO updateChoice
+               END-READ
+
+               MOVE 0 TO entryIndex
+               MOVE updateChoice(1:1) TO entryIndex
+               IF entryIndex >= 1 AND entryIndex <= educationCount
+                   PERFORM VARYING j FROM entryIndex BY 1 UNTIL j >= educationCount
+                       MOVE eduDegree(j + 1) TO eduDegree(j)
+                       MOVE eduUniversity(j + 1) TO eduUniversity(j)
+                       MOVE eduYears(j + 1) TO eduYears(j)
+                   END-PERFORM
+                   SUBTRACT 1 FROM educationCount
+                   MOVE "Education entry deleted successfully!" TO messageVar
+                   PERFORM displayAndWrite
+               ELSE
+                   MOVE "Invalid entry number." TO messageVar
+                   PERFORM displayAndWrite
+               END-IF
                EXIT.
