@@ -1,127 +1,12 @@
-/// COMPREHENSIVE TEST SUITE FOR ALL USER STORIES
-/// Testing IW-2 through IW-9 in order
-
-/// IW-2: New user account creation
-L
-Y
-testuser1
-Passw0rd!
-Q
-
-/// IW-3: Returning user login
-L
-N
-testuser1
-Passw0rd!
-Q
-
-/// IW-4: Account information persistence (verify account still exists)
-L
-N
-testuser1
-Passw0rd!
-Q
-
-/// IW-5: Too many accounts limit (create 4 more to reach limit of 5)
-L
-Y
-testuser2
-Passw0rd!
-Q
-L
-Y
-testuser3
-Passw0rd!
-Q
-L
-Y
-testuser4
-Passw0rd!
-Q
-L
-Y
-testuser5
-Passw0rd!
-Q
-L
-Y
-testuser6
-Passw0rd!
-Q
-
-/// IW-6: Unsuccessful login attempts
-L
-N
-nonexistentuser
-wrongpassword
-L
-N
-testuser1
-wrongpassword
-L
-N
-testuser1
-Passw0rd!
-Q
-
-/// IW-7: Initial navigation options (Job Search, Find Someone, Learn Skill)
-L
-N
-testuser1
-Passw0rd!
-Search for a job
-Find someone you know
-Learn a new skill
-Q
-
-/// IW-8: "Under construction" messages for undeveloped features
-L
-N
-testuser1
-Passw0rd!
-Search for a job
-Find someone you know
-Q
-
-/// IW-9: Skills list and menu navigation
-L
-N
-testuser1
-Passw0rd!
-Learn a new skill
-1
-2
-3
-4
-5
-Go Back
-Q
-
-/// BONUS: Profile functionality test
-L
-N
-testuser1
-Passw0rd!
-Create/Edit My Profile
-1
-John
-Doe
-State University
-Computer Science
-2025
-I am a passionate software developer
-4
-View My Profile
-5
-Q
-
 /// COMPLETE WORKFLOW TEST
 L
 N
 testuser1
 Passw0rd!
 Search for a job
+Go Back
 Find someone you know
+Go Back
 Learn a new skill
 Skill 1
 Go Back
@@ -134,6 +19,19 @@ Software Engineering
 2026
 Experienced developer
 4
+5
+View My Profile
+5
+Create/Edit My Profile
+1
+Hatem
+Elmougy
+Bunz University
+Digital Media
+2026
+I like to paint and create content
+4
+5
 View My Profile
 5
 Log out

@@ -1,11 +1,50 @@
 Welcome to inCollege by Team Wyoming!
 Login or Quit? (L/Q)
 Login or Quit? (L/Q)
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
 Are you a new user? (Y/N)
-Welcome, demo_user                     !
+You have successfully logged in
+Welcome, testuser1                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Search for a job functionality is under construction.
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Find someone you know functionality is under construction.
+Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
+This skill is under construction.
+Learn a New Skill:
+Skill 1
+Skill 2
+Skill 3
+Skill 4
+Skill 5
+Go Back
+Enter your choice:
 Search for a job
 Find someone you know
 Learn a new skill
@@ -13,529 +52,102 @@ Create/Edit My Profile
 View My Profile
 Log out
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
 === PERSONAL INFORMATION ===
-Current First Name:                                (Enter new name or press Enter to keep current)
-Current Last Name:                                (Enter new name or press Enter to keep current))
-Current University:                                                    (Enter new university or pres
-Current Major:                                (Enter new major or press Enter to keep current)r pres
-Current Graduation Year: 0000 (Enter new year or press Enter to keep current) to keep current)r pres
-Current About Me:
-Personal information updated successfully!
+Enter First Name (Required):
+Enter Last Name (Required):
+Enter University/College (Required):
+Enter Major (Required):
+Enter Graduation Year (Required, 4 digits):
+Enter About Me (Optional):
+Personal information entered successfully!
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== ADD EXPERIENCE ENTRY ===
-Enter Job Title:
-Enter Company/Organization:
-Enter Dates (e.g., Summer 2024):
-Enter Description (Optional):
-Experience entry added successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== ADD EDUCATION ENTRY ===
-Enter Degree:
-Enter University/College:
-Enter Years Attended (e.g., 2023-2025):
-Education entry added successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
 Profile saved successfully!
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
-Invalid choice, please try again.
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+=== MY PROFILE ===
+Name: Jane                           Smith
+University: Tech University
+Major: Software Engineering
+Graduation Year: 2026eering
+About Me: Experienced developer
+Press Enter to continue...
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== EDIT EDUCATION ENTRIES ===
-  01. Bachelor of Science                                from Tech University
-Enter the number of the education entry to edit:
-Invalid entry number.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
 === PERSONAL INFORMATION ===
-Current First Name: Alice                          (Enter new name or press Enter to keep current)
-Current Last Name: Johnson                        (Enter new name or press Enter to keep current))
-Current University: Tech University                                    (Enter new university or pres
-Current Major: Software Engineering           (Enter new major or press Enter to keep current)r pres
-Current Graduation Year: 2025 (Enter new year or press Enter to keep current) to keep current)r pres
-Invalid year. Please enter a valid 4-digit year.
-Current About Me: Passionate about technology
-Personal information updated successfully!
+Enter First Name (Required):
+Enter Last Name (Required):
+Enter University/College (Required):
+Enter Major (Required):
+Enter Graduation Year (Required, 4 digits):
+Enter About Me (Optional):
+Personal information entered successfully!
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== PERSONAL INFORMATION ===
-Current First Name: Alice                          (Enter new name or press Enter to keep current)
-Current Last Name: Smith                          (Enter new name or press Enter to keep current))
-Current University: Tech University                                    (Enter new university or pres
-Current Major: 6                              (Enter new major or press Enter to keep current)r pres
-Current Graduation Year: 2025 (Enter new year or press Enter to keep current) to keep current)r pres
-Invalid year. Please enter a valid 4-digit year.
-Current About Me: 5
-Personal information updated successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== EDIT EXPERIENCE ENTRIES ===
-  01. Software Intern                                    at Google
-Enter the number of the experience entry to edit:
-=== EDIT EXPERIENCE ENTRY
-0001 === EXPERIENCE ENTRY
-Current Title: Software Intern                                    (Enter new title or press Enter to
-Current Company: Google                                             (Enter new company or press Ente
-Current Dates: Summer 2024                    (Enter new dates or press Enter to keep current)s Ente
-Current Description: Worked on search algorithms
-Experience entry updated successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
 Profile saved successfully!
 === CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
+1. Enter Personal Information
 2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
+3. Add Education Entry
+4. Save Profile
+5. Go Back
 Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== EDIT EDUCATION ENTRIES ===
-  01. Bachelor of Science                                from Tech University
-Enter the number of the education entry to edit:
-Invalid entry number.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== EDIT EDUCATION ENTRIES ===
-  01. Bachelor of Science                                from Tech University
-Enter the number of the education entry to edit:
-=== EDIT EDUCATION ENTRY
-0001 === EDUCATION ENTRY
-Current Degree: Bachelor of Science                                (Enter new degree or press Enter
-Current University: Tech University                                    (Enter new university or pres
-Current Years: 2021-2025            (Enter new years or press Enter to keep current)iversity or pres
-Education entry updated successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Profile saved successfully!
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-Invalid choice, please try again.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
-=== EDIT EDUCATION ENTRIES ===
-  01. Master of Science                                  from Tech University
-Enter the number of the education entry to edit:
-Invalid entry number.
-=== CREATE/EDIT PROFILE ===
-1. Enter/Edit Personal Information
-2. Add Experience Entry
-3. Edit Experience Entry
-4. Add Education Entry
-5. Edit Education Entry
-6. Save Profile
-7. Go Back
-Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+=== MY PROFILE ===
+Name: Hatem                          Elmougy
+University: Bunz University
+Major: Digital Media
+Graduation Year: 2026
+About Me: I like to paint and create content
+Press Enter to continue...
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege
