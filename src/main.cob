@@ -14,6 +14,8 @@
               ORGANIZATION IS LINE SEQUENTIAL.
        SELECT accountFile ASSIGN TO "src/files/account.txt"
                 ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT profileFile ASSIGN TO "src/files/profile.txt"
+                ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
 
@@ -24,6 +26,8 @@
            01 userOutputRecord PIC X(100).
            FD accountFile.
            01 accountRecord PIC X(100).
+           FD profileFile.
+           01 profileRecord PIC X(1000).
 
          WORKING-STORAGE SECTION.
            *>Variables for user input and output
@@ -63,6 +67,36 @@
            *>Account counting and verification variables
            01 accountCount    PIC 9 VALUE 0.
            01 endOfFile       PIC X VALUE "N".
+
+           *>Profile data structures
+           01 profileData.
+               02 firstName        PIC X(30).
+               02 lastName         PIC X(30).
+               02 university       PIC X(50).
+               02 major            PIC X(30).
+               02 graduationYear   PIC 9(4).
+               02 aboutMe          PIC X(200).
+               02 experienceCount  PIC 9 VALUE 0.
+               02 experience OCCURS 3 TIMES.
+                   03 expTitle     PIC X(50).
+                   03 expCompany   PIC X(50).
+                   03 expDates     PIC X(30).
+                   03 expDesc      PIC X(100).
+               02 educationCount   PIC 9 VALUE 0.
+               02 education OCCURS 3 TIMES.
+                   03 eduDegree    PIC X(50).
+                   03 eduUniversity PIC X(50).
+                   03 eduYears     PIC X(20).
+
+           *>Profile validation variables
+           01 profileValid        PIC X VALUE "N".
+           01 yearValid           PIC X VALUE "N".
+           01 currentYear         PIC 9(4) VALUE 2024.
+           01 minYear             PIC 9(4) VALUE 1950.
+           01 maxYear             PIC 9(4) VALUE 2030.
+           01 tempYear            PIC 9(4).
+           01 profileChoice       PIC X(100).
+           01 profileExit         PIC X VALUE "N".
 
 
        PROCEDURE DIVISION.
@@ -106,19 +140,19 @@
                                            MOVE userInputRecord TO loginInput
 
                                            IF loginInput = "Y" OR loginInput = "y"
-                                               IF accountCount >= 5
+               IF accountCount >= 5
                                                    MOVE "All permitted accounts have been created, please come back later." TO messageVar
                                                    PERFORM displayAndWrite
-                                               ELSE
-                                                   PERFORM newUserRegistration
+               ELSE
+                   PERFORM newUserRegistration
                                                    IF passwordValid = "Y"
                                                        PERFORM postLoginMenu
                                                    END-IF
-                                               END-IF
-                                           ELSE
+               END-IF
+           ELSE
                                                IF loginInput = "N" OR loginInput = "n"
-                                                   PERFORM existingUserLogin
-                                               END-IF
+               PERFORM existingUserLogin
+           END-IF
                                            END-IF
                                    END-READ
                                END-IF
@@ -306,6 +340,10 @@
                    PERFORM displayAndWrite
                    MOVE "Learn a new skill" TO messageVar
                    PERFORM displayAndWrite
+                   MOVE "Create/Edit My Profile" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "View My Profile" TO messageVar
+                   PERFORM displayAndWrite
                    MOVE "Log out" TO messageVar
                    PERFORM displayAndWrite
 
@@ -318,12 +356,21 @@
                        ELSE
                            IF menuChoice = "Learn a new skill" OR menuChoice = "3"
                                PERFORM learnSkillsMenu
-                            ELSE
-                               IF menuChoice = "Log out" OR menuChoice = "6"
-                                   MOVE "Y" TO exitMenu
+                           ELSE
+                               IF menuChoice = "Create/Edit My Profile" OR menuChoice = "4"
+                                   PERFORM createEditProfile
                                ELSE
-                                   MOVE "Invalid choice, please try again." TO messageVar
-                                   PERFORM displayAndWrite
+                                   IF menuChoice = "View My Profile" OR menuChoice = "5"
+                                       PERFORM viewProfile
+                                   ELSE
+                                       IF menuChoice = "Log out" OR menuChoice = "6"
+                                           MOVE "Y" TO exitMenu
+                                       ELSE
+                                           MOVE "Invalid choice, please try again." TO messageVar
+                                           PERFORM displayAndWrite
+                                       END-IF
+                                   END-IF
+                               END-IF
                            END-IF
                        END-IF
                    END-IF
@@ -451,3 +498,374 @@
                OPEN OUTPUT accountFile
                CLOSE accountFile
            EXIT.
+
+           *> Create/Edit Profile function
+           createEditProfile.
+               MOVE "N" TO profileExit
+               PERFORM UNTIL profileExit = "Y"
+                   MOVE "=== CREATE/EDIT PROFILE ===" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "1. Enter Personal Information" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "2. Add Experience Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "3. Add Education Entry" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "4. Save Profile" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "5. Go Back" TO messageVar
+                   PERFORM displayAndWrite
+                   MOVE "Enter your choice:" TO messageVar
+                   PERFORM displayAndWrite
+
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO profileChoice
+                   END-READ
+
+                   IF profileChoice = "1" OR profileChoice = "Enter Personal Information"
+                       PERFORM enterPersonalInfo
+                   ELSE
+                       IF profileChoice = "2" OR profileChoice = "Add Experience Entry"
+                           PERFORM addExperienceEntry
+                       ELSE
+                           IF profileChoice = "3" OR profileChoice = "Add Education Entry"
+                               PERFORM addEducationEntry
+                           ELSE
+                               IF profileChoice = "4" OR profileChoice = "Save Profile"
+                                   PERFORM saveProfile
+                               ELSE
+                                   IF profileChoice = "5" OR profileChoice = "Go Back"
+                                       MOVE "Y" TO profileExit
+                                   ELSE
+                                       MOVE "Invalid choice, please try again." TO messageVar
+                                       PERFORM displayAndWrite
+                                   END-IF
+                               END-IF
+                           END-IF
+                       END-IF
+                   END-IF
+               END-PERFORM
+               EXIT.
+
+           *> Enter Personal Information
+           enterPersonalInfo.
+               MOVE "=== PERSONAL INFORMATION ===" TO messageVar
+               PERFORM displayAndWrite
+
+               MOVE "Enter First Name (Required):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO firstName
+               END-READ
+
+               MOVE "Enter Last Name (Required):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO lastName
+               END-READ
+
+               MOVE "Enter University/College (Required):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO university
+               END-READ
+
+               MOVE "Enter Major (Required):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO major
+               END-READ
+
+               MOVE "Enter Graduation Year (Required, 4 digits):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO tempYear
+                       PERFORM validateYear
+                       IF yearValid = "Y"
+                           MOVE tempYear TO graduationYear
+                       ELSE
+                           MOVE "Invalid year. Please enter a valid 4-digit year." TO messageVar
+                           PERFORM displayAndWrite
+                       END-IF
+               END-READ
+
+               MOVE "Enter About Me (Optional):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO aboutMe
+               END-READ
+
+               MOVE "Personal information entered successfully!" TO messageVar
+               PERFORM displayAndWrite
+               EXIT.
+
+           *> Add Experience Entry
+           addExperienceEntry.
+               IF experienceCount >= 3
+                   MOVE "Maximum of 3 experience entries allowed." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               ADD 1 TO experienceCount
+               MOVE "=== ADD EXPERIENCE ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+
+               MOVE "Enter Job Title:" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO expTitle(experienceCount)
+               END-READ
+
+               MOVE "Enter Company/Organization:" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO expCompany(experienceCount)
+               END-READ
+
+               MOVE "Enter Dates (e.g., Summer 2024):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO expDates(experienceCount)
+               END-READ
+
+               MOVE "Enter Description (Optional):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO expDesc(experienceCount)
+               END-READ
+
+               MOVE "Experience entry added successfully!" TO messageVar
+               PERFORM displayAndWrite
+               EXIT.
+
+           *> Add Education Entry
+           addEducationEntry.
+               IF educationCount >= 3
+                   MOVE "Maximum of 3 education entries allowed." TO messageVar
+                   PERFORM displayAndWrite
+                   EXIT
+               END-IF
+
+               ADD 1 TO educationCount
+               MOVE "=== ADD EDUCATION ENTRY ===" TO messageVar
+               PERFORM displayAndWrite
+
+               MOVE "Enter Degree:" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO eduDegree(educationCount)
+               END-READ
+
+               MOVE "Enter University/College:" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO eduUniversity(educationCount)
+               END-READ
+
+               MOVE "Enter Years Attended (e.g., 2023-2025):" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       MOVE "Y" TO profileExit
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       MOVE userInputRecord TO eduYears(educationCount)
+               END-READ
+
+               MOVE "Education entry added successfully!" TO messageVar
+               PERFORM displayAndWrite
+               EXIT.
+
+           *> Save Profile
+           saveProfile.
+               OPEN EXTEND profileFile
+               MOVE inputUsername TO profileRecord(1:30)
+               MOVE firstName TO profileRecord(31:60)
+               MOVE lastName TO profileRecord(61:90)
+               MOVE university TO profileRecord(91:140)
+               MOVE major TO profileRecord(141:170)
+               MOVE graduationYear TO profileRecord(171:174)
+               MOVE aboutMe TO profileRecord(175:374)
+               MOVE experienceCount TO profileRecord(375:375)
+               MOVE educationCount TO profileRecord(376:376)
+               WRITE profileRecord
+               CLOSE profileFile
+               MOVE "Profile saved successfully!" TO messageVar
+               PERFORM displayAndWrite
+               EXIT.
+
+           *> View Profile
+           viewProfile.
+               PERFORM loadProfile
+               MOVE "=== MY PROFILE ===" TO messageVar
+               PERFORM displayAndWrite
+
+               STRING "Name: " DELIMITED BY SIZE
+                      firstName DELIMITED BY SIZE
+                      " " DELIMITED BY SIZE
+                      lastName DELIMITED BY SIZE
+                   INTO messageVar
+               END-STRING
+               PERFORM displayAndWrite
+
+               STRING "University: " DELIMITED BY SIZE
+                      university DELIMITED BY SIZE
+                   INTO messageVar
+               END-STRING
+               PERFORM displayAndWrite
+
+               STRING "Major: " DELIMITED BY SIZE
+                      major DELIMITED BY SIZE
+                   INTO messageVar
+               END-STRING
+               PERFORM displayAndWrite
+
+               STRING "Graduation Year: " DELIMITED BY SIZE
+                      graduationYear DELIMITED BY SIZE
+                   INTO messageVar
+               END-STRING
+               PERFORM displayAndWrite
+
+               IF aboutMe NOT = SPACES
+                   STRING "About Me: " DELIMITED BY SIZE
+                          aboutMe DELIMITED BY SIZE
+                       INTO messageVar
+                   END-STRING
+                   PERFORM displayAndWrite
+               END-IF
+
+               IF experienceCount > 0
+                   MOVE "Experience:" TO messageVar
+                   PERFORM displayAndWrite
+                   PERFORM VARYING i FROM 1 BY 1 UNTIL i > experienceCount
+                       STRING "  " DELIMITED BY SIZE
+                              expTitle(i) DELIMITED BY SIZE
+                              " at " DELIMITED BY SIZE
+                              expCompany(i) DELIMITED BY SIZE
+                              " (" DELIMITED BY SIZE
+                              expDates(i) DELIMITED BY SIZE
+                              ")" DELIMITED BY SIZE
+                           INTO messageVar
+                       END-STRING
+                       PERFORM displayAndWrite
+                       IF expDesc(i) NOT = SPACES
+                           STRING "    " DELIMITED BY SIZE
+                                  expDesc(i) DELIMITED BY SIZE
+                               INTO messageVar
+                           END-STRING
+                           PERFORM displayAndWrite
+                       END-IF
+                   END-PERFORM
+               END-IF
+
+               IF educationCount > 0
+                   MOVE "Education:" TO messageVar
+                   PERFORM displayAndWrite
+                   PERFORM VARYING i FROM 1 BY 1 UNTIL i > educationCount
+                       STRING "  " DELIMITED BY SIZE
+                              eduDegree(i) DELIMITED BY SIZE
+                              " from " DELIMITED BY SIZE
+                              eduUniversity(i) DELIMITED BY SIZE
+                              " (" DELIMITED BY SIZE
+                              eduYears(i) DELIMITED BY SIZE
+                              ")" DELIMITED BY SIZE
+                           INTO messageVar
+                       END-STRING
+                       PERFORM displayAndWrite
+                   END-PERFORM
+               END-IF
+
+               MOVE "Press Enter to continue..." TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END
+                       EXIT PARAGRAPH
+                   NOT AT END
+                       CONTINUE
+               END-READ
+               EXIT.
+
+           *> Validate Year
+           validateYear.
+               MOVE "N" TO yearValid
+               IF tempYear >= minYear AND tempYear <= maxYear
+                   MOVE "Y" TO yearValid
+               END-IF
+               EXIT.
+
+           *> Load Profile
+           loadProfile.
+               MOVE "N" TO endOfFile
+               OPEN INPUT profileFile
+               PERFORM UNTIL endOfFile = "Y"
+                   READ profileFile INTO profileRecord
+                       AT END
+                           MOVE "Y" TO endOfFile
+                       NOT AT END
+                           IF profileRecord(1:30) = inputUsername
+                               MOVE profileRecord(31:60) TO firstName
+                               MOVE profileRecord(61:90) TO lastName
+                               MOVE profileRecord(91:140) TO university
+                               MOVE profileRecord(141:170) TO major
+                               MOVE profileRecord(171:174) TO graduationYear
+                               MOVE profileRecord(175:374) TO aboutMe
+                               MOVE profileRecord(375:375) TO experienceCount
+                               MOVE profileRecord(376:376) TO educationCount
+                           END-IF
+                   END-READ
+               END-PERFORM
+               CLOSE profileFile
+               EXIT.
