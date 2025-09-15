@@ -14,7 +14,7 @@ Works the same on **Windows 11** and **macOS** (Apple Silicon and Intel).
 **Run the template**
 1. Clone this repo and open it in VS Code.
 2. When prompted, click **“Reopen in Container”**. (Or run *Dev Containers: Reopen in Container* from the Command Palette.)
-3. Open `src/hello.cob`.
+3. Open `src/main.cob`.
 4. Press **Ctrl+Shift+B** (or **⇧⌘B** on Mac) to **Build**, or run the task **COBOL: Run active file (after build)** from the command palette.
 5. The compiled program will be placed in `bin/` and run in the VS Code terminal.
 
@@ -27,7 +27,7 @@ Works the same on **Windows 11** and **macOS** (Apple Silicon and Intel).
 ## Common Commands (inside the container)
 ```bash
 # Compile and run a COBOL program manually
-cobc -x -o bin/hello src/main.cob
+cobc -x -o bin/main src/main.cob
 ./bin/main
 ```
 
