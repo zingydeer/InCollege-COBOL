@@ -27,7 +27,7 @@
            FD accountFile.
            01 accountRecord PIC X(100).
            FD profileFile.
-           01 profileRecord PIC X(1000).
+           01 profileRecord PIC X(2000).
 
          WORKING-STORAGE SECTION.
            *>Variables for user input and output
@@ -92,8 +92,8 @@
            01 profileValid        PIC X VALUE "N".
            01 yearValid           PIC X VALUE "N".
            01 currentYear         PIC 9(4) VALUE 2024.
-           01 minYear             PIC 9(4) VALUE 1950.
-           01 maxYear             PIC 9(4) VALUE 2030.
+           01 minYear             PIC 9(4) VALUE 1900.
+           01 maxYear             PIC 9(4) VALUE 2100.
            01 tempYear            PIC 9(4).
            01 profileChoice       PIC X(100).
            01 profileExit         PIC X VALUE "N".
@@ -280,10 +280,8 @@
                    WRITE accountRecord
                    CLOSE accountFile
                    DISPLAY "Account Created."
-                   *> You can add further progression logic here
                ELSE
                    DISPLAY "Password does not meet requirements. Please try again."
-                   *> Optionally, you can PERFORM newUserRegistration again or exit
                END-IF
                EXIT.
 
@@ -594,60 +592,87 @@
 
                MOVE "Enter First Name (Required):" TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       MOVE "Y" TO profileExit
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       MOVE userInputRecord TO firstName
-               END-READ
+               PERFORM UNTIL firstName NOT = SPACES
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO firstName
+                   END-READ
+                   IF firstName = SPACES
+                       MOVE "First Name cannot be blank. Please enter a value." TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               END-PERFORM
 
                MOVE "Enter Last Name (Required):" TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       MOVE "Y" TO profileExit
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       MOVE userInputRecord TO lastName
-               END-READ
+               PERFORM UNTIL lastName NOT = SPACES
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO lastName
+                   END-READ
+                   IF lastName = SPACES
+                       MOVE "Last Name cannot be blank. Please enter a value." TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               END-PERFORM
 
                MOVE "Enter University/College (Required):" TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       MOVE "Y" TO profileExit
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       MOVE userInputRecord TO university
-               END-READ
+               PERFORM UNTIL university NOT = SPACES
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO university
+                   END-READ
+                   IF university = SPACES
+                       MOVE "University/College cannot be blank. Please enter a value." TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               END-PERFORM
 
                MOVE "Enter Major (Required):" TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       MOVE "Y" TO profileExit
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       MOVE userInputRecord TO major
-               END-READ
+               PERFORM UNTIL major NOT = SPACES
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO major
+                   END-READ
+                   IF major = SPACES
+                       MOVE "Major cannot be blank. Please enter a value." TO messageVar
+                       PERFORM displayAndWrite
+                   END-IF
+               END-PERFORM
 
                MOVE "Enter Graduation Year (Required, 4 digits):" TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       MOVE "Y" TO profileExit
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       MOVE userInputRecord TO tempYear
-                       PERFORM validateYear
-                       IF yearValid = "Y"
-                           MOVE tempYear TO graduationYear
-                       ELSE
-                           MOVE "Invalid year. Please enter a valid 4-digit year." TO messageVar
-                           PERFORM displayAndWrite
-                       END-IF
-               END-READ
+               MOVE "N" TO yearValid
+               PERFORM UNTIL yearValid = "Y"
+                   READ userInputFile INTO userInputRecord
+                       AT END
+                           MOVE "Y" TO profileExit
+                           EXIT PARAGRAPH
+                       NOT AT END
+                           MOVE userInputRecord TO tempYear
+                           PERFORM validateYear
+                           IF yearValid = "Y"
+                               MOVE tempYear TO graduationYear
+                           ELSE
+                               MOVE "Invalid year. Please enter a valid 4-digit year." TO messageVar
+                               PERFORM displayAndWrite
+                           END-IF
+                   END-READ
+               END-PERFORM
 
                MOVE "Enter About Me (Optional):" TO messageVar
                PERFORM displayAndWrite
@@ -672,6 +697,12 @@
                END-IF
 
                ADD 1 TO experienceCount
+               MOVE experienceCount TO j
+               MOVE SPACES TO expTitle(j)
+               MOVE SPACES TO expCompany(j)
+               MOVE SPACES TO expDates(j)
+               MOVE SPACES TO expDesc(j)
+
                MOVE "=== ADD EXPERIENCE ENTRY ===" TO messageVar
                PERFORM displayAndWrite
 
@@ -728,6 +759,11 @@
                END-IF
 
                ADD 1 TO educationCount
+               MOVE educationCount TO j
+               MOVE SPACES TO eduDegree(j)
+               MOVE SPACES TO eduUniversity(j)
+               MOVE SPACES TO eduYears(j)
+
                MOVE "=== ADD EDUCATION ENTRY ===" TO messageVar
                PERFORM displayAndWrite
 
@@ -766,22 +802,70 @@
                EXIT.
 
            *> Save Profile
-           saveProfile.
-               OPEN EXTEND profileFile
-               MOVE inputUsername TO profileRecord(1:30)
-               MOVE firstName TO profileRecord(31:60)
-               MOVE lastName TO profileRecord(61:90)
-               MOVE university TO profileRecord(91:140)
-               MOVE major TO profileRecord(141:170)
-               MOVE graduationYear TO profileRecord(171:174)
-               MOVE aboutMe TO profileRecord(175:374)
-               MOVE experienceCount TO profileRecord(375:375)
-               MOVE educationCount TO profileRecord(376:376)
-               WRITE profileRecord
-               CLOSE profileFile
-               MOVE "Profile saved successfully!" TO messageVar
-               PERFORM displayAndWrite
-               EXIT.
+   *> Save Profile
+saveProfile.
+    OPEN EXTEND profileFile
+    MOVE SPACES TO profileRecord
+
+    MOVE inputUsername   TO profileRecord(1:30)
+    MOVE firstName       TO profileRecord(31:30)
+    MOVE lastName        TO profileRecord(61:30)
+    MOVE university      TO profileRecord(91:50)
+    MOVE major           TO profileRecord(141:30)
+    MOVE graduationYear  TO profileRecord(171:4)
+    MOVE aboutMe         TO profileRecord(175:200)
+    MOVE experienceCount TO profileRecord(375:1)
+    MOVE educationCount  TO profileRecord(376:1)
+
+    *> ---- Blank any unused experience slots so stale data isn't re-saved
+    MOVE experienceCount TO j
+    ADD 1 TO j
+    PERFORM VARYING j FROM j BY 1 UNTIL j > 3
+        MOVE SPACES TO expTitle(j)
+        MOVE SPACES TO expCompany(j)
+        MOVE SPACES TO expDates(j)
+        MOVE SPACES TO expDesc(j)
+    END-PERFORM
+
+    *> ---- Blank any unused education slots
+    MOVE educationCount TO j
+    ADD 1 TO j
+    PERFORM VARYING j FROM j BY 1 UNTIL j > 3
+        MOVE SPACES TO eduDegree(j)
+        MOVE SPACES TO eduUniversity(j)
+        MOVE SPACES TO eduYears(j)
+    END-PERFORM
+
+    *> ------- Experience (3 × 230) starting at 377
+    MOVE 377 TO j
+    PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+        MOVE expTitle(i)   TO profileRecord(j:50)
+        ADD 50 TO j
+        MOVE expCompany(i) TO profileRecord(j:50)
+        ADD 50 TO j
+        MOVE expDates(i)   TO profileRecord(j:30)
+        ADD 30 TO j
+        MOVE expDesc(i)    TO profileRecord(j:100)
+        ADD 100 TO j
+    END-PERFORM
+
+    *> ------- Education (3 × 120) starts at 1067 (=377 + 690)
+    MOVE 1067 TO j
+    PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+        MOVE eduDegree(i)     TO profileRecord(j:50)
+        ADD 50 TO j
+        MOVE eduUniversity(i) TO profileRecord(j:50)
+        ADD 50 TO j
+        MOVE eduYears(i)      TO profileRecord(j:20)
+        ADD 20 TO j
+    END-PERFORM
+
+    WRITE profileRecord
+    CLOSE profileFile
+    MOVE "Profile saved successfully!" TO messageVar
+    PERFORM displayAndWrite
+    EXIT.
+
 
            *> View Profile
            viewProfile.
@@ -823,23 +907,35 @@
                    PERFORM displayAndWrite
                END-IF
 
+               STRING "DEBUG: expCount=" DELIMITED BY SIZE
+       experienceCount     DELIMITED BY SIZE
+       " eduCount="        DELIMITED BY SIZE
+       educationCount      DELIMITED BY SIZE
+   INTO messageVar
+END-STRING
+PERFORM displayAndWrite
+
                IF experienceCount > 0
                    MOVE "Experience:" TO messageVar
                    PERFORM displayAndWrite
                    PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
+                       MOVE SPACES TO tempString
+                       MOVE j TO tempString(1:1)
                        STRING "  " DELIMITED BY SIZE
+                              tempString(1:1) DELIMITED BY SIZE
+                              ". " DELIMITED BY SIZE
                               expTitle(j) DELIMITED BY SIZE
                               " at " DELIMITED BY SIZE
                               expCompany(j) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
-                              expDates(i) DELIMITED BY SIZE
+                              expDates(j) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
                            INTO messageVar
                        END-STRING
                        PERFORM displayAndWrite
-                       IF expDesc(i) NOT = SPACES
+                       IF expDesc(j) NOT = SPACES
                            STRING "    " DELIMITED BY SIZE
-                                  expDesc(i) DELIMITED BY SIZE
+                                  expDesc(j) DELIMITED BY SIZE
                                INTO messageVar
                            END-STRING
                            PERFORM displayAndWrite
@@ -851,12 +947,16 @@
                    MOVE "Education:" TO messageVar
                    PERFORM displayAndWrite
                    PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
+                       MOVE SPACES TO tempString
+                       MOVE j TO tempString(1:1)
                        STRING "  " DELIMITED BY SIZE
+                              tempString(1:1) DELIMITED BY SIZE
+                              ". " DELIMITED BY SIZE
                               eduDegree(j) DELIMITED BY SIZE
                               " from " DELIMITED BY SIZE
                               eduUniversity(j) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
-                              eduYears(i) DELIMITED BY SIZE
+                              eduYears(j) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
                            INTO messageVar
                        END-STRING
@@ -866,12 +966,7 @@
 
                MOVE "Press Enter to continue..." TO messageVar
                PERFORM displayAndWrite
-               READ userInputFile INTO userInputRecord
-                   AT END
-                       EXIT PARAGRAPH
-                   NOT AT END
-                       CONTINUE
-               END-READ
+               *> Removed the extra READ here to avoid requiring a blank line in input.txt
                EXIT.
 
            *> Validate Year
@@ -892,17 +987,56 @@
                            MOVE "Y" TO endOfFile
                        NOT AT END
                            IF profileRecord(1:30) = inputUsername
-                               MOVE profileRecord(31:60) TO firstName
-                               MOVE profileRecord(61:90) TO lastName
-                               MOVE profileRecord(91:140) TO university
-                               MOVE profileRecord(141:170) TO major
-                               MOVE profileRecord(171:174) TO graduationYear
-                               MOVE profileRecord(175:374) TO aboutMe
-                               MOVE profileRecord(375:375) TO experienceCount
-                               MOVE profileRecord(376:376) TO educationCount
+                               MOVE profileRecord(31:30)   TO firstName
+                               MOVE profileRecord(61:30)   TO lastName
+                               MOVE profileRecord(91:50)   TO university
+                               MOVE profileRecord(141:30)  TO major
+                               MOVE profileRecord(171:4)   TO graduationYear
+                               MOVE profileRecord(175:200) TO aboutMe
+                               MOVE profileRecord(375:1)   TO experienceCount
+                               MOVE profileRecord(376:1)   TO educationCount
+
+                               *> ---- Experience block
+                               MOVE 377 TO j
+                               PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+                                   MOVE profileRecord(j:50)   TO expTitle(i)
+                                   ADD 50 TO j
+                                   MOVE profileRecord(j:50)   TO expCompany(i)
+                                   ADD 50 TO j
+                                   MOVE profileRecord(j:30)   TO expDates(i)
+                                   ADD 30 TO j
+                                   MOVE profileRecord(j:100)  TO expDesc(i)
+                                   ADD 100 TO j
+                               END-PERFORM
+
+                               *> ---- Education block
+                               MOVE 1067 TO j
+                               PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+                                   MOVE profileRecord(j:50)   TO eduDegree(i)
+                                   ADD 50 TO j
+                                   MOVE profileRecord(j:50)   TO eduUniversity(i)
+                                   ADD 50 TO j
+                                   MOVE profileRecord(j:20)   TO eduYears(i)
+                                   ADD 20 TO j
+                               END-PERFORM
                            END-IF
                    END-READ
                END-PERFORM
+               *> Recompute counts from loaded arrays (ignore file bytes for safety)
+MOVE 0 TO experienceCount
+PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+    IF expTitle(i) NOT = SPACES
+        ADD 1 TO experienceCount
+    END-IF
+END-PERFORM
+
+MOVE 0 TO educationCount
+PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
+    IF eduDegree(i) NOT = SPACES
+        ADD 1 TO educationCount
+    END-IF
+END-PERFORM
+
                CLOSE profileFile
                EXIT.
 
@@ -1034,8 +1168,10 @@
                PERFORM displayAndWrite
 
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
+                   MOVE SPACES TO tempString
+                   MOVE j TO tempString(1:1)
                    STRING "  " DELIMITED BY SIZE
-                          i DELIMITED BY SIZE
+                          tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
                           expTitle(j) DELIMITED BY SIZE
                           " at " DELIMITED BY SIZE
@@ -1134,8 +1270,10 @@
                PERFORM displayAndWrite
 
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
+                   MOVE SPACES TO tempString
+                   MOVE j TO tempString(1:1)
                    STRING "  " DELIMITED BY SIZE
-                          i DELIMITED BY SIZE
+                          tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
                           expTitle(j) DELIMITED BY SIZE
                           " at " DELIMITED BY SIZE
@@ -1193,8 +1331,10 @@
                PERFORM displayAndWrite
 
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
+                   MOVE SPACES TO tempString
+                   MOVE j TO tempString(1:1)
                    STRING "  " DELIMITED BY SIZE
-                          i DELIMITED BY SIZE
+                          tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
                           eduDegree(j) DELIMITED BY SIZE
                           " from " DELIMITED BY SIZE
@@ -1281,8 +1421,10 @@
                PERFORM displayAndWrite
 
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
+                   MOVE SPACES TO tempString
+                   MOVE j TO tempString(1:1)
                    STRING "  " DELIMITED BY SIZE
-                          i DELIMITED BY SIZE
+                          tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
                           eduDegree(j) DELIMITED BY SIZE
                           " from " DELIMITED BY SIZE
