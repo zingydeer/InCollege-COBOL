@@ -16,6 +16,8 @@
                 ORGANIZATION IS LINE SEQUENTIAL.
        SELECT profileFile ASSIGN TO "src/files/profile.txt"
                 ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT tempProfileFileHandle ASSIGN TO "src/files/temp_profile.txt"
+                ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
 
@@ -28,6 +30,8 @@
            01 accountRecord PIC X(100).
            FD profileFile.
            01 profileRecord PIC X(2000).
+           FD tempProfileFileHandle.
+           01 tempProfileFileRecord PIC X(2000).
 
          WORKING-STORAGE SECTION.
            *>Variables for user input and output
@@ -103,6 +107,11 @@
            01 entryIndex          PIC 9 VALUE 0.
            01 j                   PIC 9 VALUE 0.
            01 tempString          PIC X(100).
+
+           *>Profile save/update variables
+           01 tempProfileRecord   PIC X(2000).
+           01 userFound           PIC X VALUE "N".
+           01 tempProfileFile     PIC X(50) VALUE "src/files/temp_profile.txt".
 
 
        PROCEDURE DIVISION.
@@ -801,21 +810,19 @@
                PERFORM displayAndWrite
                EXIT.
 
-           *> Save Profile
-   *> Save Profile
+           *> Save Profile - Overwrite existing user profile or create new one
 saveProfile.
-    OPEN EXTEND profileFile
-    MOVE SPACES TO profileRecord
-
-    MOVE inputUsername   TO profileRecord(1:30)
-    MOVE firstName       TO profileRecord(31:30)
-    MOVE lastName        TO profileRecord(61:30)
-    MOVE university      TO profileRecord(91:50)
-    MOVE major           TO profileRecord(141:30)
-    MOVE graduationYear  TO profileRecord(171:4)
-    MOVE aboutMe         TO profileRecord(175:200)
-    MOVE experienceCount TO profileRecord(375:1)
-    MOVE educationCount  TO profileRecord(376:1)
+    *> Build the new profile record
+    MOVE SPACES TO tempProfileRecord
+    MOVE inputUsername   TO tempProfileRecord(1:30)
+    MOVE firstName       TO tempProfileRecord(31:30)
+    MOVE lastName        TO tempProfileRecord(61:30)
+    MOVE university      TO tempProfileRecord(91:50)
+    MOVE major           TO tempProfileRecord(141:30)
+    MOVE graduationYear  TO tempProfileRecord(171:4)
+    MOVE aboutMe         TO tempProfileRecord(175:200)
+    MOVE experienceCount TO tempProfileRecord(375:1)
+    MOVE educationCount  TO tempProfileRecord(376:1)
 
     *> ---- Blank any unused experience slots so stale data isn't re-saved
     MOVE experienceCount TO j
@@ -839,29 +846,80 @@ saveProfile.
     *> ------- Experience (3 × 230) starting at 377
     MOVE 377 TO j
     PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
-        MOVE expTitle(i)   TO profileRecord(j:50)
+        MOVE expTitle(i)   TO tempProfileRecord(j:50)
         ADD 50 TO j
-        MOVE expCompany(i) TO profileRecord(j:50)
+        MOVE expCompany(i) TO tempProfileRecord(j:50)
         ADD 50 TO j
-        MOVE expDates(i)   TO profileRecord(j:30)
+        MOVE expDates(i)   TO tempProfileRecord(j:30)
         ADD 30 TO j
-        MOVE expDesc(i)    TO profileRecord(j:100)
+        MOVE expDesc(i)    TO tempProfileRecord(j:100)
         ADD 100 TO j
     END-PERFORM
 
     *> ------- Education (3 × 120) starts at 1067 (=377 + 690)
     MOVE 1067 TO j
     PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
-        MOVE eduDegree(i)     TO profileRecord(j:50)
+        MOVE eduDegree(i)     TO tempProfileRecord(j:50)
         ADD 50 TO j
-        MOVE eduUniversity(i) TO profileRecord(j:50)
+        MOVE eduUniversity(i) TO tempProfileRecord(j:50)
         ADD 50 TO j
-        MOVE eduYears(i)      TO profileRecord(j:20)
+        MOVE eduYears(i)      TO tempProfileRecord(j:20)
         ADD 20 TO j
     END-PERFORM
 
-    WRITE profileRecord
+    *> Now rewrite the entire profile file, updating the user's record
+    MOVE "N" TO userFound
+    MOVE "N" TO endOfFile
+
+    *> Open original file for reading and temp file for writing
+    OPEN INPUT profileFile
+    OPEN OUTPUT tempProfileFileHandle
+
+    *> Copy all records, updating the current user's record
+    PERFORM UNTIL endOfFile = "Y"
+        READ profileFile INTO profileRecord
+            AT END
+                MOVE "Y" TO endOfFile
+            NOT AT END
+                IF profileRecord(1:30) = inputUsername
+                    *> Replace with updated record
+                    MOVE tempProfileRecord TO tempProfileFileRecord
+                    MOVE "Y" TO userFound
+                ELSE
+                    *> Copy existing record unchanged
+                    MOVE profileRecord TO tempProfileFileRecord
+                END-IF
+                WRITE tempProfileFileRecord
+        END-READ
+    END-PERFORM
+
+    *> If user not found, append the new record
+    IF userFound = "N"
+        MOVE tempProfileRecord TO tempProfileFileRecord
+        WRITE tempProfileFileRecord
+    END-IF
+
     CLOSE profileFile
+    CLOSE tempProfileFileHandle
+
+    *> Replace original file with temp file
+    OPEN OUTPUT profileFile
+    OPEN INPUT tempProfileFileHandle
+    MOVE "N" TO endOfFile
+
+    PERFORM UNTIL endOfFile = "Y"
+        READ tempProfileFileHandle INTO tempProfileFileRecord
+            AT END
+                MOVE "Y" TO endOfFile
+            NOT AT END
+                MOVE tempProfileFileRecord TO profileRecord
+                WRITE profileRecord
+        END-READ
+    END-PERFORM
+
+    CLOSE profileFile
+    CLOSE tempProfileFileHandle
+
     MOVE "Profile saved successfully!" TO messageVar
     PERFORM displayAndWrite
     EXIT.
@@ -907,13 +965,6 @@ saveProfile.
                    PERFORM displayAndWrite
                END-IF
 
-               STRING "DEBUG: expCount=" DELIMITED BY SIZE
-       experienceCount     DELIMITED BY SIZE
-       " eduCount="        DELIMITED BY SIZE
-       educationCount      DELIMITED BY SIZE
-   INTO messageVar
-END-STRING
-PERFORM displayAndWrite
 
                IF experienceCount > 0
                    MOVE "Experience:" TO messageVar
@@ -1019,23 +1070,14 @@ PERFORM displayAndWrite
                                    MOVE profileRecord(j:20)   TO eduYears(i)
                                    ADD 20 TO j
                                END-PERFORM
+
+                               *> Exit after finding the user's profile (only one per user now)
+                               MOVE "Y" TO endOfFile
                            END-IF
                    END-READ
                END-PERFORM
-               *> Recompute counts from loaded arrays (ignore file bytes for safety)
-MOVE 0 TO experienceCount
-PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
-    IF expTitle(i) NOT = SPACES
-        ADD 1 TO experienceCount
-    END-IF
-END-PERFORM
-
-MOVE 0 TO educationCount
-PERFORM VARYING i FROM 1 BY 1 UNTIL i > 3
-    IF eduDegree(i) NOT = SPACES
-        ADD 1 TO educationCount
-    END-IF
-END-PERFORM
+               *> Use the counts from the file instead of recalculating
+               *> The counts are already loaded from profileRecord(375:1) and profileRecord(376:1)
 
                CLOSE profileFile
                EXIT.

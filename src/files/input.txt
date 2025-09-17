@@ -1,7 +1,7 @@
 /// COMPLETE WORKFLOW TEST
 L
 N
-testuser1
+Hatem21
 Passw0rd!
 Search for a job
 Go Back
@@ -22,6 +22,14 @@ Experienced developer
 10
 View My Profile
 5
+Create/Edit My Profile
+3
+I am very experienced in fullstack development.
+Tech Solutions Inc
+Summer 2024
+Led development of multiple web applications
+9
+10
 Create/Edit My Profile
 2
 Hatem

@@ -3,7 +3,7 @@ Login or Quit? (L/Q)
 Login or Quit? (L/Q)
 Are you a new user? (Y/N)
 You have successfully logged in
-Welcome, testuser1                     !
+Welcome, Hatem21                       !
 Search for a job
 Find someone you know
 Learn a new skill
@@ -115,6 +115,68 @@ Learn a new skill
 Create/Edit My Profile
 View My Profile
 Log out
+=== MY PROFILE ===
+Name: Jane                           Smith
+University: Tech University
+Major: Software Engineering
+Graduation Year: 2026eering
+About Me: Experienced developer
+Press Enter to continue...
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== ADD EXPERIENCE ENTRY ===
+Enter Job Title:
+Enter Company/Organization:
+Enter Dates (e.g., Summer 2024):
+Enter Description (Optional):
+Experience entry added successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+Profile saved successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
 2. Update Personal Information
@@ -184,6 +246,25 @@ University: Bunz University
 Major: Digital Media
 Graduation Year: 2026
 About Me: I like to paint and create content
+Experience:
+  1. I am very experienced in fullstack development.    at Tech Solutions Inc
+    Led development of multiple web applications
+Press Enter to continue...
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+=== MY PROFILE ===
+Name: Hatem                          Elmougy
+University: Bunz University
+Major: Digital Media
+Graduation Year: 2026
+About Me: I like to paint and create content
+Experience:
+  1. I am very experienced in fullstack development.    at Tech Solutions Inc
+    Led development of multiple web applications
 Press Enter to continue...
 Search for a job
 Find someone you know
