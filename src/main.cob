@@ -340,6 +340,7 @@
 
            *> Post-login main menu
            postLoginMenu.
+               MOVE SPACES TO messageVar
                STRING "Welcome, " DELIMITED BY SIZE
                       inputUsername DELIMITED BY SIZE
                       "!" DELIMITED BY SIZE
@@ -903,6 +904,7 @@ saveProfile.
                MOVE "=== PROFILE ===" TO messageVar
                PERFORM displayAndWrite
 
+               MOVE SPACES TO messageVar
                STRING "Name: " DELIMITED BY SIZE
                       firstName DELIMITED BY SIZE
                       " " DELIMITED BY SIZE
@@ -911,18 +913,21 @@ saveProfile.
                END-STRING
                PERFORM displayAndWrite
 
+               MOVE SPACES TO messageVar
                STRING "University: " DELIMITED BY SIZE
                       university DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
 
+               MOVE SPACES TO messageVar
                STRING "Major: " DELIMITED BY SIZE
                       major DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
 
+               MOVE SPACES TO messageVar
                STRING "Graduation Year: " DELIMITED BY SIZE
                       graduationYear DELIMITED BY SIZE
                    INTO messageVar
@@ -930,6 +935,7 @@ saveProfile.
                PERFORM displayAndWrite
 
                IF aboutMe NOT = SPACES
+                   MOVE SPACES TO messageVar
                    STRING "About Me: " DELIMITED BY SIZE
                           aboutMe DELIMITED BY SIZE
                        INTO messageVar
@@ -944,6 +950,7 @@ saveProfile.
                    PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
                        MOVE SPACES TO tempString
                        MOVE j TO tempString(1:1)
+                       MOVE SPACES TO messageVar
                        STRING "  " DELIMITED BY SIZE
                               tempString(1:1) DELIMITED BY SIZE
                               ". " DELIMITED BY SIZE
@@ -957,6 +964,7 @@ saveProfile.
                        END-STRING
                        PERFORM displayAndWrite
                        IF expDesc(j) NOT = SPACES
+                           MOVE SPACES TO messageVar
                            STRING "    " DELIMITED BY SIZE
                                   expDesc(j) DELIMITED BY SIZE
                                INTO messageVar
@@ -972,6 +980,7 @@ saveProfile.
                    PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
                        MOVE SPACES TO tempString
                        MOVE j TO tempString(1:1)
+                       MOVE SPACES TO messageVar
                        STRING "  " DELIMITED BY SIZE
                               tempString(1:1) DELIMITED BY SIZE
                               ". " DELIMITED BY SIZE
@@ -1197,6 +1206,7 @@ saveProfile.
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
                    MOVE SPACES TO tempString
                    MOVE j TO tempString(1:1)
+                   MOVE SPACES TO messageVar
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
@@ -1299,6 +1309,7 @@ saveProfile.
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > experienceCount
                    MOVE SPACES TO tempString
                    MOVE j TO tempString(1:1)
+                   MOVE SPACES TO messageVar
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
@@ -1360,6 +1371,7 @@ saveProfile.
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
                    MOVE SPACES TO tempString
                    MOVE j TO tempString(1:1)
+                   MOVE SPACES TO messageVar
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
@@ -1450,6 +1462,7 @@ saveProfile.
                PERFORM VARYING j FROM 1 BY 1 UNTIL j > educationCount
                    MOVE SPACES TO tempString
                    MOVE j TO tempString(1:1)
+                   MOVE SPACES TO messageVar
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
