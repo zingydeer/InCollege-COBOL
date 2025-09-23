@@ -1,12 +1,31 @@
+/// COMPLETE WORKFLOW TEST
+X
 L
 Y
-student40
-Passw01d!123123
-L
-Y
-student40
+NewUser
 Passw0rd!
+Create/Edit My Profile
 1
-6
-6
+John
+Doe
+USF
+Computer Science
+2025
+I love Cobol!
+3
+Software Developer
+IBM
+2025-present
+Maintained legacy Cobol.
+9
+10
+Log out
+L
+Y
+OtherUser
+Passw0rd!
+Find someone you know
+John
+Doe
+Log out
 Q

@@ -1,20 +1,109 @@
 Welcome to inCollege by Team Wyoming!
 Login or Quit? (L/Q)
-Are you a new user? (Y/N)
-Invalid password length. Must be 8-12 characters.
+Login or Quit? (L/Q)
 Login or Quit? (L/Q)
 Are you a new user? (Y/N)
-Welcome, student40                     !
+Welcome, NewUser                       !
 Search for a job
 Find someone you know
 Learn a new skill
+Create/Edit My Profile
+View My Profile
 Log out
-Search for a job functionality is under construction.
-Go Back
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== PERSONAL INFORMATION ===
+Enter First Name (Required):
+Enter Last Name (Required):
+Enter University/College (Required):
+Enter Major (Required):
+Enter Graduation Year (Required, 4 digits):
+Enter About Me (Optional):
+Personal information entered successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== ADD EXPERIENCE ENTRY ===
+Enter Job Title:
+Enter Company/Organization:
+Enter Dates (e.g., Summer 2024):
+Enter Description (Optional):
+Experience entry added successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
 Search for a job
 Find someone you know
 Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Welcome, OtherUser                     !
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
+Log out
+Please enter their first and then last name or 6 to go back.
+Enter last name:
+=== PROFILE ===
+Name: John                           Doe
+University: USF
+Major: Computer Science
+Graduation Year: 2025ce
+About Me: I love Cobol!
+Experience:
+  1. Software Developer                                 at IBM
+    Maintained legacy Cobol.
+Press Enter to continue...
+Search for a job
+Find someone you know
+Learn a new skill
+Create/Edit My Profile
+View My Profile
 Log out
 Login or Quit? (L/Q)
 Thank you for using inCollege
