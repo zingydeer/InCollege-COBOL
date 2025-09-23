@@ -1494,7 +1494,7 @@ saveProfile.
                EXIT.
 
 findProfile.
-    MOVE "N" TO profileFound  *> Initialize the flag
+    MOVE "N" TO profileFound
     MOVE "N" TO endOfFile
     OPEN INPUT profileFile
     PERFORM UNTIL endOfFile = "Y"
@@ -1506,10 +1506,10 @@ findProfile.
                     MOVE profileRecord(1:30) TO inputUsername
                     MOVE "Y" TO profileFound
                 END-IF
-        END-READ  *> This should be inside the PERFORM loop
+        END-READ
     END-PERFORM
 
-    CLOSE profileFile  *> Don't forget to close the file
+    CLOSE profileFile
 
     IF profileFound = "N"
         MOVE "Profile not found." TO messageVar
@@ -1519,4 +1519,4 @@ findProfile.
 
     PERFORM loadProfile
     PERFORM viewProfile
-    EXIT.  *> You only need one EXIT
+    EXIT.
