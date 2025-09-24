@@ -1,9 +1,7 @@
 Welcome to inCollege by Team Wyoming!
 Login or Quit? (L/Q)
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
 Are you a new user? (Y/N)
-Welcome, NewUser                       !
+Welcome, TrimUser!
 Search for a job
 Find someone you know
 Learn a new skill
@@ -60,6 +58,23 @@ Experience entry added successfully!
 9. Save Profile
 10. Go Back
 Enter your choice:
+=== ADD EDUCATION ENTRY ===
+Enter Degree:
+Enter University/College:
+Enter Years Attended (e.g., 2023-2025):
+Education entry added successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
 === CREATE/EDIT PROFILE ===
 1. Enter Personal Information
 2. Update Personal Information
@@ -78,26 +93,17 @@ Learn a new skill
 Create/Edit My Profile
 View My Profile
 Log out
-Login or Quit? (L/Q)
-Are you a new user? (Y/N)
-Welcome, OtherUser                     !
-Search for a job
-Find someone you know
-Learn a new skill
-Create/Edit My Profile
-View My Profile
-Log out
-Please enter their first and then last name or 6 to go back.
-Enter last name:
 === PROFILE ===
-Name: John                           Doe
-University: USF
-Major: Computer Science
-Graduation Year: 2025ce
-About Me: I love Cobol!
+Name:  Alice  Smith
+University:  USF
+Major:  Computer Science
+Graduation Year: 2025
+About Me:  Loves COBOL!
 Experience:
-  1. Software Developer                                 at IBM
-    Maintained legacy Cobol.
+  1.  Developer at  IBM (2021-2023)
+     Maintained COBOL apps
+Education:
+  1.  B.S. Computer Science from  USF ( 2021-2025)
 Press Enter to continue...
 Search for a job
 Find someone you know

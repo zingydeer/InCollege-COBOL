@@ -25,7 +25,7 @@
            FD userInputFile.
            01 userInputRecord PIC X(100).
            FD userOutputFile.
-           01 userOutputRecord PIC X(100).
+           01 userOutputRecord PIC X(200).
            FD accountFile.
            01 accountRecord PIC X(100).
            FD profileFile.
@@ -38,7 +38,7 @@
            01 loginInput        PIC X.
            01 userName       PIC X(30).
            01 userPassword   PIC X(30).
-           01 messageVar     PIC X(150).
+           01 messageVar     PIC X(200).
 
            *>New Password validation variables
            01 passwordValid    PIC X VALUE "N".
@@ -342,7 +342,7 @@
            postLoginMenu.
                MOVE SPACES TO messageVar
                STRING "Welcome, " DELIMITED BY SIZE
-                      inputUsername DELIMITED BY SIZE
+                      FUNCTION TRIM(inputUsername TRAILING) DELIMITED BY SIZE
                       "!" DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
@@ -906,30 +906,30 @@ saveProfile.
 
                MOVE SPACES TO messageVar
                STRING "Name: " DELIMITED BY SIZE
-                      firstName DELIMITED BY SIZE
+                      FUNCTION TRIM(firstName TRAILING) DELIMITED BY SIZE
                       " " DELIMITED BY SIZE
-                      lastName DELIMITED BY SIZE
+                      FUNCTION TRIM(lastName TRAILING) DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
 
                MOVE SPACES TO messageVar
                STRING "University: " DELIMITED BY SIZE
-                      university DELIMITED BY SIZE
+                      FUNCTION TRIM(university TRAILING) DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
 
                MOVE SPACES TO messageVar
                STRING "Major: " DELIMITED BY SIZE
-                      major DELIMITED BY SIZE
+                     FUNCTION TRIM(major TRAILING) DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
 
                MOVE SPACES TO messageVar
                STRING "Graduation Year: " DELIMITED BY SIZE
-                      graduationYear DELIMITED BY SIZE
+                     FUNCTION TRIM(graduationYear TRAILING) DELIMITED BY SIZE
                    INTO messageVar
                END-STRING
                PERFORM displayAndWrite
@@ -937,7 +937,7 @@ saveProfile.
                IF aboutMe NOT = SPACES
                    MOVE SPACES TO messageVar
                    STRING "About Me: " DELIMITED BY SIZE
-                          aboutMe DELIMITED BY SIZE
+                          FUNCTION TRIM(aboutMe TRAILING) DELIMITED BY SIZE
                        INTO messageVar
                    END-STRING
                    PERFORM displayAndWrite
@@ -954,11 +954,11 @@ saveProfile.
                        STRING "  " DELIMITED BY SIZE
                               tempString(1:1) DELIMITED BY SIZE
                               ". " DELIMITED BY SIZE
-                              expTitle(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(expTitle(j) TRAILING) DELIMITED BY SIZE
                               " at " DELIMITED BY SIZE
-                              expCompany(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(expCompany(j) TRAILING) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
-                              expDates(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(expDates(j) TRAILING) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
                            INTO messageVar
                        END-STRING
@@ -966,7 +966,7 @@ saveProfile.
                        IF expDesc(j) NOT = SPACES
                            MOVE SPACES TO messageVar
                            STRING "    " DELIMITED BY SIZE
-                                  expDesc(j) DELIMITED BY SIZE
+                                  FUNCTION TRIM(expDesc(j) TRAILING) DELIMITED BY SIZE
                                INTO messageVar
                            END-STRING
                            PERFORM displayAndWrite
@@ -984,11 +984,11 @@ saveProfile.
                        STRING "  " DELIMITED BY SIZE
                               tempString(1:1) DELIMITED BY SIZE
                               ". " DELIMITED BY SIZE
-                              eduDegree(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(eduDegree(j) TRAILING) DELIMITED BY SIZE
                               " from " DELIMITED BY SIZE
-                              eduUniversity(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(eduUniversity(j) TRAILING) DELIMITED BY SIZE
                               " (" DELIMITED BY SIZE
-                              eduYears(j) DELIMITED BY SIZE
+                              FUNCTION TRIM(eduYears(j) TRAILING) DELIMITED BY SIZE
                               ")" DELIMITED BY SIZE
                            INTO messageVar
                        END-STRING
@@ -1210,9 +1210,9 @@ saveProfile.
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
-                          expTitle(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(expTitle(j) TRAILING) DELIMITED BY SIZE
                           " at " DELIMITED BY SIZE
-                          expCompany(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(expCompany(j) TRAILING) DELIMITED BY SIZE
                        INTO messageVar
                    END-STRING
                    PERFORM displayAndWrite
@@ -1313,9 +1313,9 @@ saveProfile.
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
-                          expTitle(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(expTitle(j) TRAILING) DELIMITED BY SIZE
                           " at " DELIMITED BY SIZE
-                          expCompany(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(expCompany(j) TRAILING) DELIMITED BY SIZE
                        INTO messageVar
                    END-STRING
                    PERFORM displayAndWrite
@@ -1375,9 +1375,9 @@ saveProfile.
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
-                          eduDegree(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(eduDegree(j) TRAILING) DELIMITED BY SIZE
                           " from " DELIMITED BY SIZE
-                          eduUniversity(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(eduUniversity(j) TRAILING) DELIMITED BY SIZE
                        INTO messageVar
                    END-STRING
                    PERFORM displayAndWrite
@@ -1466,9 +1466,9 @@ saveProfile.
                    STRING "  " DELIMITED BY SIZE
                           tempString(1:1) DELIMITED BY SIZE
                           ". " DELIMITED BY SIZE
-                          eduDegree(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(eduDegree(j) TRAILING) DELIMITED BY SIZE
                           " from " DELIMITED BY SIZE
-                          eduUniversity(j) DELIMITED BY SIZE
+                          FUNCTION TRIM(eduUniversity(j) TRAILING) DELIMITED BY SIZE
                        INTO messageVar
                    END-STRING
                    PERFORM displayAndWrite

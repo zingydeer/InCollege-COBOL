@@ -1,31 +1,26 @@
-/// COMPLETE WORKFLOW TEST
-X
 L
 Y
-NewUser
+TrimUser
 Passw0rd!
 Create/Edit My Profile
 1
-John
-Doe
-USF
-Computer Science
+ Alice
+ Smith
+ USF
+ Computer Science
 2025
-I love Cobol!
+ Loves COBOL!
 3
-Software Developer
-IBM
-2025-present
-Maintained legacy Cobol.
+ Developer
+ IBM
+2021-2023
+ Maintained COBOL apps
+6
+ B.S. Computer Science
+ USF
+ 2021-2025
 9
 10
-Log out
-L
-Y
-OtherUser
-Passw0rd!
-Find someone you know
-John
-Doe
+View My Profile
 Log out
 Q
