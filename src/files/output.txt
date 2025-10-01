@@ -1,20 +1,164 @@
 Welcome to inCollege by Team Wyoming!
 Login or Quit? (L/Q)
-Are you a new user? (Y/N)
-Invalid password length. Must be 8-12 characters.
+All files cleared.
 Login or Quit? (L/Q)
 Are you a new user? (Y/N)
-Welcome, student40                     !
-Search for a job
-Find someone you know
-Learn a new skill
-Log out
-Search for a job functionality is under construction.
-Go Back
+Welcome, student41!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
 Enter your choice:
-Search for a job
-Find someone you know
-Learn a new skill
-Log out
+=== PERSONAL INFORMATION ===
+Enter First Name (Required):
+Enter Last Name (Required):
+Enter University/College (Required):
+Enter Major (Required):
+Enter Graduation Year (Required, 4 digits):
+Enter About Me (Optional):
+Personal information entered successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
 Login or Quit? (L/Q)
-Thank you for using inCollege
+Are you a new user? (Y/N)
+Welcome, otherStudent!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== PERSONAL INFORMATION ===
+Enter First Name (Required):
+Enter Last Name (Required):
+Enter University/College (Required):
+Enter Major (Required):
+Enter Graduation Year (Required, 4 digits):
+Enter About Me (Optional):
+Personal information entered successfully!
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+=== CREATE/EDIT PROFILE ===
+1. Enter Personal Information
+2. Update Personal Information
+3. Add Experience Entry
+4. Update Experience Entry
+5. Delete Experience Entry
+6. Add Education Entry
+7. Update Education Entry
+8. Delete Education Entry
+9. Save Profile
+10. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
+Please enter their first and then last name or 6 to go back.
+Enter last name:
+=== PROFILE ===
+Name: Jane Smith
+University: USF,
+Major: Computer Engineering
+Graduation Year: 2026
+About Me: I have mild disdain for coding!
+Press Enter to continue...
+1. Send Connection Request
+2. Back to Main Menu
+Connection request sent to student41.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, student41!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out
+--- Pending Connection Requests ---
+otherStudent
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. View My Pending Connection Requests
+7. Log out

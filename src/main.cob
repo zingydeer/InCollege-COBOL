@@ -283,6 +283,13 @@
                 IF quitProgram = "N"
                     PERFORM validatePassword
                     IF passwordValid = "Y"
+                        *>Refresh session vars
+                        MOVE SPACES TO firstName
+                        MOVE SPACES TO lastName
+                        MOVE SPACES TO university
+                        MOVE SPACES TO major
+                        MOVE ZEROS TO graduationYear
+                        MOVE SPACES TO aboutMe
                         OPEN EXTEND accountFile
                         MOVE userName TO accountRecord(1:30)
                         MOVE userPassword TO accountRecord(31:60)
@@ -324,6 +331,7 @@
             postLoginMenu.
                 MOVE SPACES TO messageVar
                 STRING "Welcome, " DELIMITED BY SIZE, FUNCTION TRIM(inputUsername) DELIMITED BY SIZE, "!" DELIMITED BY SIZE INTO messageVar
+
                 PERFORM displayAndWrite
 
                 MOVE "N" TO exitMenu
@@ -638,12 +646,12 @@
                                 IF yearValid = "Y"
                                     MOVE tempYear TO graduationYear
                                 ELSE
-                                    MOVE "Invalid year. Please enter a valid 4-digit year." TO messageVar
+                                    MOVE "Invalid year1. Please enter a valid 4-digit year." TO messageVar
                                     PERFORM displayAndWrite
                                 END-IF
                             ELSE
                                 MOVE "N" TO yearValid
-                                MOVE "Invalid year. Please enter a valid 4-digit year." TO messageVar
+                                MOVE "Invalid year2. Please enter a valid 4-digit year." TO messageVar
                                 PERFORM displayAndWrite
                             END-IF
                     END-READ
@@ -953,8 +961,6 @@
                 END-IF
                 MOVE "Press Enter to continue..." TO messageVar
                 PERFORM displayAndWrite
-                READ userInputFile INTO userInputRecord
-                    AT END MOVE "Y" TO quitProgram.
             EXIT.
 
             validateYear.
@@ -1434,7 +1440,7 @@
                 EXIT.
 
             findProfile.
-                MOVE "N" TO profileFound, endOfFile
+                MOVE "N" TO profileFound, endOfFile, quitProgram
                 OPEN INPUT profileFile
                 PERFORM UNTIL endOfFile = "Y"
                     READ profileFile INTO profileRecord AT END MOVE "Y" TO endOfFile
@@ -1464,11 +1470,9 @@
                     NOT AT END MOVE userInputRecord to menuChoice
                 END-READ
 
-                IF quitProgram = "N"
-                    IF FUNCTION TRIM(menuChoice) = "1"
-                        PERFORM sendConnectionRequest
-                    END-IF
-                END-IF
+                   IF menuChoice = "1"
+                       PERFORM sendConnectionRequest
+                   END-IF
                 MOVE originalUsername to inputUsername
                 EXIT.
             viewPendingRequests.
@@ -1497,6 +1501,7 @@
                 EXIT.
 
             sendConnectionRequest.
+                DISPLAY "Hurrah I have made it to sendConnectionRequest"
                 IF FUNCTION TRIM(originalUsername) = FUNCTION TRIM(targetUsername)
                     MOVE "You cannot send a connection request to yourself." TO messageVar
                     PERFORM displayAndWrite
