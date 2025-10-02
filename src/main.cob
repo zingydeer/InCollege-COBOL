@@ -21,6 +21,10 @@
         SELECT connectionFile ASSIGN TO "src/files/connections.txt"
                 ORGANIZATION IS LINE SEQUENTIAL.
 
+        SELECT establishedConnectionFile ASSIGN TO "src/files/established_connections.txt"
+           ORGANIZATION IS LINE SEQUENTIAL.
+
+
         DATA DIVISION.
 
         FILE SECTION.
@@ -36,6 +40,8 @@
             01 tempProfileFileRecord PIC X(2000).
             FD connectionFile.
             01 connectionRecord PIC X(61).
+            FD establishedConnectionFile.
+            01 establishedConnectionRecord PIC X(61).
 
         WORKING-STORAGE SECTION.
             *>Variables for user input and output
@@ -134,6 +140,13 @@
             01 requestAlreadyExists PIC X VALUE "N".
             01 existingConnectionRecord PIC X(61).
 
+            *> Established connections variables
+            01 establishedConnectionData.
+               02 user1Username PIC X(30).
+               02 user2Username PIC X(30).
+            01 networkChoice PIC X(100).
+            01 requestChoice PIC X(100).
+
         PROCEDURE DIVISION.
             OPEN INPUT userInputFile
             OPEN OUTPUT userOutputFile.
@@ -221,7 +234,6 @@
                 MOVE "All files cleared." TO messageVar
                 PERFORM displayAndWrite
             EXIT.
-
 
             validatePassword.
                 MOVE FUNCTION LENGTH(FUNCTION TRIM(userPassword TRAILING)) TO passwordLength
@@ -342,7 +354,7 @@
                     MOVE "4. Create/Edit My Profile" TO messageVar; PERFORM displayAndWrite
                     MOVE "5. View My Profile" TO messageVar; PERFORM displayAndWrite
                     MOVE "6. View My Pending Connection Requests" TO messageVar; PERFORM displayAndWrite
-                    MOVE "7. Log out" TO messageVar; PERFORM displayAndWrite
+                    MOVE "0. Log out" TO messageVar; PERFORM displayAndWrite
 
                     READ userInputFile INTO userInputRecord
                         AT END MOVE "Y" TO quitProgram
@@ -351,13 +363,13 @@
 
                     IF quitProgram = "N"
                         EVALUATE FUNCTION TRIM(menuChoice)
+                            WHEN "0" WHEN "Log out" MOVE "Y" TO exitMenu
                             WHEN "1" WHEN "Search for a job" PERFORM searchForJobMenu
                             WHEN "2" WHEN "Find someone you know" PERFORM findSomeoneMenu
                             WHEN "3" WHEN "Learn a new skill" PERFORM learnSkillsMenu
                             WHEN "4" WHEN "Create/Edit My Profile" PERFORM createEditProfile
                             WHEN "5" WHEN "View My Profile" PERFORM viewProfile
                             WHEN "6" WHEN "View My Pending Connection Requests" PERFORM viewPendingRequests
-                            WHEN "7" WHEN "Log out" MOVE "Y" TO exitMenu
                             WHEN OTHER MOVE "Invalid choice, please try again." TO messageVar; PERFORM displayAndWrite
                         END-EVALUATE
                     END-IF
@@ -379,7 +391,7 @@
                     PERFORM displayAndWrite
                     MOVE "Skill 5" TO messageVar
                     PERFORM displayAndWrite
-                    MOVE "Go Back" TO messageVar
+                    MOVE "Go Back (0)" TO messageVar
                     PERFORM displayAndWrite
                     MOVE "Enter your choice:" TO messageVar
                     PERFORM displayAndWrite
@@ -393,7 +405,7 @@
                         MOVE userInputRecord TO menuChoice
                 END-READ
 
-                    IF menuChoice = "Go Back" OR menuChoice = "6"
+                    IF menuChoice = "Go Back" OR menuChoice = "0"
                         MOVE "Y" TO exitSkills
                     ELSE
                         IF menuChoice = "Skill 1" OR menuChoice = "1"
@@ -444,13 +456,13 @@
                         MOVE userInputRecord TO menuChoice
                 END-READ
 
-                IF menuChoice = "Go Back" OR menuChoice = "6"
+                IF menuChoice = "Go Back (0)" OR menuChoice = "0"
                     MOVE "Y" TO exitSearch
                 END-IF
                 END-PERFORM
                 EXIT.
             findSomeoneMenu.
-                MOVE "Please enter their first and then last name or 6 to go back." TO messageVar
+                MOVE "Please enter their first and then last name or 0 to go back." TO messageVar
                 PERFORM displayAndWrite
 
                 READ userInputFile INTO userInputRecord
@@ -460,7 +472,7 @@
                         MOVE userInputRecord TO menuChoice
                 END-READ
 
-                IF menuChoice = "Go Back" OR menuChoice = "6"
+                IF menuChoice = "Go Back" OR menuChoice = "0"
                     EXIT PARAGRAPH
                 ELSE
                     MOVE menuChoice TO queryFirstName
@@ -504,7 +516,7 @@
                     PERFORM displayAndWrite
                     MOVE "9. Save Profile" TO messageVar
                     PERFORM displayAndWrite
-                    MOVE "10. Go Back" TO messageVar
+                    MOVE "0. Go Back" TO messageVar
                     PERFORM displayAndWrite
                     MOVE "Enter your choice:" TO messageVar
                     PERFORM displayAndWrite
@@ -544,7 +556,7 @@
                     IF profileChoice = "9" OR profileChoice = "Save Profile"
                         PERFORM saveProfile
                     ELSE
-                    IF profileChoice = "10" OR profileChoice = "Go Back"
+                    IF profileChoice = "0" OR profileChoice = "Go Back"
                         MOVE "Y" TO profileExit
                     ELSE
                         MOVE "Invalid choice, please try again." TO messageVar
@@ -961,8 +973,7 @@
                 END-IF
                 MOVE "Press Enter to continue..." TO messageVar
                 PERFORM displayAndWrite
-            EXIT.
-
+                EXIT.
             validateYear.
                 MOVE "N" TO yearValid
                 IF tempYear >= minYear AND tempYear <= maxYear
@@ -1549,5 +1560,63 @@
                     END-STRING
                     PERFORM displayAndWrite
                 END-IF.
-                EXIT.
+           EXIT.
 
+            processConnectionRequests.
+                DISPLAY "Hurrah I have made it to processConnectionRequests"
+                MOVE "N" TO pendingRequestsFound, endOfFile
+                OPEN INPUT connectionFile
+                PERFORM UNTIL endOfFile = "Y"
+                    READ connectionFile INTO connectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            MOVE connectionRecord TO connectionData
+                            IF FUNCTION TRIM(recipientUsername) = FUNCTION TRIM(inputUsername)
+                                MOVE senderUsername TO user1Username
+                                MOVE recipientUsername TO user2Username
+                                STRING user1Username " has sent you a connection request. Accept or Reject? (A/R)" DELIMITED BY SIZE
+                                    INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                READ userInputFile INTO userInputRecord AT END
+                                    MOVE "Y" TO profileExit
+                                    EXIT PARAGRAPH
+                                NOT AT END
+                                    MOVE userInputRecord TO requestChoice
+                                END-READ
+
+                                IF requestChoice = "A" OR requestChoice = "a"
+                                    PERFORM acceptConnectionRequest
+                                    MOVE "You are now connected with " TO messageVar
+                                    STRING messageVar DELIMITED BY SIZE
+                                        user1Username DELIMITED BY SIZE
+                                        "." DELIMITED BY SIZE
+                                    INTO messageVar
+                                    END-STRING
+                                    PERFORM displayAndWrite
+                                ELSE IF requestChoice = "R" OR requestChoice = "r"
+                                    PERFORM rejectConnectionRequest
+                                    MOVE "You have rejected the connection request from " TO messageVar
+                                    STRING messageVar DELIMITED BY SIZE
+                                        user1Username DELIMITED BY SIZE
+                                        "." DELIMITED BY SIZE
+                                    INTO messageVar
+                                    END-STRING
+                                    PERFORM displayAndWrite
+                                ELSE
+                                    MOVE "Invalid choice. Skipping this request." TO messageVar
+                                    PERFORM displayAndWrite
+                                END-IF
+
+                                MOVE "Y" TO pendingRequestsFound
+                            END-IF
+                    END-READ
+                END-PERFORM
+                CLOSE connectionFile
+
+                IF pendingRequestsFound = "N"
+                    MOVE "You have no pending connection requests at this time." TO messageVar
+                    PERFORM displayAndWrite
+                END-IF
+
+                EXIT.
