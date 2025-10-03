@@ -1,3 +1,6 @@
+//test cases for connection feature
+
+//acutal working one to connect two accounts
 X
 L
 Y
@@ -39,32 +42,23 @@ Brown
 1
 0
 L
-Y
-Charlie
-Charlie123!
-4
-1
-Charlie
-Clause
-University of Alabama
-Biology
-2015
-I love biology!
-9
-0
-2
-Bob
-Brown
-1
-0
-L
 N
 Bob
 Bob123!
 6
 A
 7
+
 0
+L
+N
+Alice
+Alice123!
+7
+0
+Q
+
+//check for Alice
 L
 N
 Alice

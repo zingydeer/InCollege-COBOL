@@ -20,6 +20,8 @@
                 ORGANIZATION IS LINE SEQUENTIAL.
         SELECT connectionFile ASSIGN TO "src/files/connections.txt"
                 ORGANIZATION IS LINE SEQUENTIAL.
+        SELECT tempConnectionFile ASSIGN TO "src/files/temp_connections.txt"
+                ORGANIZATION IS LINE SEQUENTIAL.
 
         SELECT establishedConnectionFile ASSIGN TO "src/files/established_connections.txt"
            ORGANIZATION IS LINE SEQUENTIAL.
@@ -40,6 +42,8 @@
             01 tempProfileFileRecord PIC X(2000).
             FD connectionFile.
             01 connectionRecord PIC X(61).
+            FD tempConnectionFile.
+            01 tempConnectionRecord PIC X(61).
             FD establishedConnectionFile.
             01 establishedConnectionRecord PIC X(61).
 
@@ -142,10 +146,12 @@
 
             *> Established connections variables
             01 establishedConnectionData.
-               02 user1Username PIC X(30).
-               02 user2Username PIC X(30).
+               02 connectedUser1 PIC X(30).
+               02 connectedUser2 PIC X(30).
             01 networkChoice PIC X(100).
             01 requestChoice PIC X(100).
+            01 user1Username PIC X(30).
+            01 user2Username PIC X(30).
 
         PROCEDURE DIVISION.
             OPEN INPUT userInputFile
@@ -229,8 +235,8 @@
             EXIT.
 
             clearFiles.
-                OPEN OUTPUT accountFile, profileFile, connectionFile
-                CLOSE accountFile, profileFile, connectionFile
+                OPEN OUTPUT accountFile, profileFile, connectionFile, establishedConnectionFile
+                CLOSE accountFile, profileFile, connectionFile, establishedConnectionFile
                 MOVE "All files cleared." TO messageVar
                 PERFORM displayAndWrite
             EXIT.
@@ -353,7 +359,8 @@
                     MOVE "3. Learn a new skill" TO messageVar; PERFORM displayAndWrite
                     MOVE "4. Create/Edit My Profile" TO messageVar; PERFORM displayAndWrite
                     MOVE "5. View My Profile" TO messageVar; PERFORM displayAndWrite
-                    MOVE "6. View My Pending Connection Requests" TO messageVar; PERFORM displayAndWrite
+                    MOVE "6. Manage Pending Connection Requests" TO messageVar; PERFORM displayAndWrite
+                    MOVE "7. View My Network" TO messageVar; PERFORM displayAndWrite
                     MOVE "0. Log out" TO messageVar; PERFORM displayAndWrite
 
                     READ userInputFile INTO userInputRecord
@@ -369,7 +376,8 @@
                             WHEN "3" WHEN "Learn a new skill" PERFORM learnSkillsMenu
                             WHEN "4" WHEN "Create/Edit My Profile" PERFORM createEditProfile
                             WHEN "5" WHEN "View My Profile" PERFORM viewProfile
-                            WHEN "6" WHEN "View My Pending Connection Requests" PERFORM viewPendingRequests
+                            WHEN "6" WHEN "Manage Pending Connection Requests" PERFORM processConnectionRequests
+                            WHEN "7" WHEN "View My Network" PERFORM viewMyNetwork
                             WHEN OTHER MOVE "Invalid choice, please try again." TO messageVar; PERFORM displayAndWrite
                         END-EVALUATE
                     END-IF
@@ -842,6 +850,8 @@
                                 WRITE tempProfileFileRecord FROM profileRecord
                             END-IF
                     END-READ
+                    MOVE "Profile Saved Twice apparently DEBUG" TO messageVar
+                    PERFORM displayAndWrite
                 END-PERFORM
 
                 CLOSE profileFile, tempProfileFileHandle.
@@ -1573,10 +1583,13 @@
                             IF FUNCTION TRIM(recipientUsername) = FUNCTION TRIM(inputUsername)
                                 MOVE senderUsername TO user1Username
                                 MOVE recipientUsername TO user2Username
-                                STRING user1Username " has sent you a connection request. Accept or Reject? (A/R)" DELIMITED BY SIZE
+                                STRING FUNCTION TRIM(user1Username) " has sent you a connection request. Accept or Reject? (A/R)" DELIMITED BY SIZE
                                     INTO messageVar
                                 END-STRING
                                 PERFORM displayAndWrite
+
+                                *> Close the file before calling accept/reject functions to avoid "file already open" error
+                                CLOSE connectionFile
 
                                 READ userInputFile INTO userInputRecord AT END
                                     MOVE "Y" TO profileExit
@@ -1594,6 +1607,9 @@
                                     INTO messageVar
                                     END-STRING
                                     PERFORM displayAndWrite
+                                    MOVE "Y" TO pendingRequestsFound
+                                    *> acceptConnectionRequest already handled all file operations, so exit
+                                    EXIT PARAGRAPH
                                 ELSE IF requestChoice = "R" OR requestChoice = "r"
                                     PERFORM rejectConnectionRequest
                                     MOVE "You have rejected the connection request from " TO messageVar
@@ -1603,20 +1619,166 @@
                                     INTO messageVar
                                     END-STRING
                                     PERFORM displayAndWrite
+                                    MOVE "Y" TO pendingRequestsFound
+                                    *> rejectConnectionRequest already handled all file operations, so exit
+                                    EXIT PARAGRAPH
                                 ELSE
                                     MOVE "Invalid choice. Skipping this request." TO messageVar
                                     PERFORM displayAndWrite
                                 END-IF
 
                                 MOVE "Y" TO pendingRequestsFound
+                                *> Exit the loop after processing one request
+                                MOVE "Y" TO endOfFile
                             END-IF
                     END-READ
                 END-PERFORM
-                CLOSE connectionFile
 
+                *> Only close if file is still open (in case we didn't process any requests)
                 IF pendingRequestsFound = "N"
+                    CLOSE connectionFile
                     MOVE "You have no pending connection requests at this time." TO messageVar
                     PERFORM displayAndWrite
                 END-IF
+                EXIT.
 
+
+            acceptConnectionRequest.
+                *> Step 1: Add bidirectional connection to established connections file
+                OPEN EXTEND establishedConnectionFile
+
+                *> Add connection: sender -> recipient (Alice -> Bob)
+                MOVE user1Username TO establishedConnectionData(1:30)
+                MOVE user2Username TO establishedConnectionData(31:30)
+                WRITE establishedConnectionRecord FROM establishedConnectionData
+
+                *> Add connection: recipient -> sender (Bob -> Alice)
+                MOVE user2Username TO establishedConnectionData(1:30)
+                MOVE user1Username TO establishedConnectionData(31:30)
+                WRITE establishedConnectionRecord FROM establishedConnectionData
+
+                CLOSE establishedConnectionFile
+
+                *> Step 2: Remove processed request from pending requests file
+                MOVE "N" TO endOfFile
+                OPEN INPUT connectionFile
+                OPEN OUTPUT tempConnectionFile
+
+                PERFORM UNTIL endOfFile = "Y"
+                    READ connectionFile INTO connectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            MOVE connectionRecord TO connectionData
+                            *> Keep all requests EXCEPT the one we just processed
+                            IF NOT (FUNCTION TRIM(senderUsername) = FUNCTION TRIM(user1Username) AND FUNCTION TRIM(recipientUsername) = FUNCTION TRIM(user2Username))
+                                WRITE tempConnectionRecord FROM connectionRecord
+                            END-IF
+                    END-READ
+                END-PERFORM
+
+                CLOSE connectionFile, tempConnectionFile
+
+                *> Replace original with updated temp file (same pattern as saveProfile)
+                OPEN OUTPUT connectionFile
+                OPEN INPUT tempConnectionFile
+                MOVE "N" TO endOfFile
+                PERFORM UNTIL endOfFile = "Y"
+                    READ tempConnectionFile INTO tempConnectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            WRITE connectionRecord FROM tempConnectionRecord
+                    END-READ
+                END-PERFORM
+                CLOSE connectionFile, tempConnectionFile
+                EXIT.
+
+            rejectConnectionRequest.
+                *> Simply remove the processed request from pending requests file
+                MOVE "N" TO endOfFile
+                OPEN INPUT connectionFile
+                OPEN OUTPUT tempConnectionFile
+
+                PERFORM UNTIL endOfFile = "Y"
+                    READ connectionFile INTO connectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            MOVE connectionRecord TO connectionData
+                            *> Keep all requests EXCEPT the one we just rejected
+                            IF NOT (FUNCTION TRIM(senderUsername) = FUNCTION TRIM(user1Username) AND FUNCTION TRIM(recipientUsername) = FUNCTION TRIM(user2Username))
+                                WRITE tempConnectionRecord FROM connectionRecord
+                            END-IF
+                    END-READ
+                END-PERFORM
+
+                CLOSE connectionFile, tempConnectionFile
+
+                *> Replace original with updated temp file
+                OPEN OUTPUT connectionFile
+                OPEN INPUT tempConnectionFile
+                MOVE "N" TO endOfFile
+                PERFORM UNTIL endOfFile = "Y"
+                    read tempConnectionFile INTO tempConnectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            WRITE connectionRecord FROM tempConnectionRecord
+                    END-READ
+                END-PERFORM
+                CLOSE connectionFile, tempConnectionFile
+                EXIT.
+
+            viewMyNetwork.
+                MOVE "=== MY NETWORK ===" TO messageVar
+                PERFORM displayAndWrite
+
+                MOVE "N" TO pendingRequestsFound, endOfFile
+                OPEN INPUT establishedConnectionFile
+                PERFORM UNTIL endOfFile = "Y"
+                    read establishedConnectionFile INTO establishedConnectionRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            MOVE establishedConnectionRecord TO establishedConnectionData
+                            IF FUNCTION TRIM(connectedUser1) = FUNCTION TRIM(inputUsername)
+                                *> This user is connected to someone - show the connection
+                                STRING "Connected with: " DELIMITED BY SIZE
+                                    FUNCTION TRIM(connectedUser2) DELIMITED BY SIZE
+                                INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+                                MOVE "Y" TO pendingRequestsFound
+                            END-IF
+                    END-READ
+                END-PERFORM
+                CLOSE establishedConnectionFile
+
+                IF pendingRequestsFound = "N"
+                    MOVE "You have no connections yet. Start connecting with other users!" TO messageVar
+                    PERFORM displayAndWrite
+                END-IF
+
+                MOVE "Press Enter to continue..." TO messageVar
+                PERFORM displayAndWrite
+                EXIT.
+
+            displayConnectionInfo.
+                *> Load profile information for the connected user
+                MOVE "N" TO endOfFile
+                OPEN INPUT profileFile
+                PERFORM UNTIL endOfFile = "Y"
+                    read profileFile INTO profileRecord AT END MOVE "Y" TO endOfFile
+                        NOT AT END
+                            IF FUNCTION TRIM(profileRecord(1:30)) = FUNCTION TRIM(targetUsername)
+                                *> Found connected user's profile
+                                MOVE SPACES TO messageVar
+                                STRING "Connected with: " DELIMITED BY SIZE
+                                        FUNCTION TRIM(profileRecord(31:30)) DELIMITED BY SIZE
+                                        " " DELIMITED BY SIZE
+                                        FUNCTION TRIM(profileRecord(61:30)) DELIMITED BY SIZE
+                                        " (" DELIMITED BY SIZE
+                                        FUNCTION TRIM(profileRecord(91:50)) DELIMITED BY SIZE
+                                        ", " DELIMITED BY SIZE
+                                        FUNCTION TRIM(profileRecord(141:30)) DELIMITED BY SIZE
+                                        ")" DELIMITED BY SIZE
+                                    INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+                                MOVE "Y" TO endOfFile
+                            END-IF
+                    END-READ
+                END-PERFORM
+                CLOSE profileFile
                 EXIT.
