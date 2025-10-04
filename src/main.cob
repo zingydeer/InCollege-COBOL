@@ -1647,12 +1647,12 @@
                 *> Step 1: Add bidirectional connection to established connections file
                 OPEN EXTEND establishedConnectionFile
 
-                *> Add connection: sender -> recipient (Alice -> Bob)
+                *> Add connection: sender -> recipient 
                 MOVE user1Username TO establishedConnectionData(1:30)
                 MOVE user2Username TO establishedConnectionData(31:30)
                 WRITE establishedConnectionRecord FROM establishedConnectionData
 
-                *> Add connection: recipient -> sender (Bob -> Alice)
+                *> Add connection: recipient -> sender
                 MOVE user2Username TO establishedConnectionData(1:30)
                 MOVE user1Username TO establishedConnectionData(31:30)
                 WRITE establishedConnectionRecord FROM establishedConnectionData
