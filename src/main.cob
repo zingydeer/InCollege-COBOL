@@ -1,4 +1,4 @@
->>SOURCE FORMAT FREE
+       >>SOURCE FORMAT FREE
        IDENTIFICATION DIVISION.
        PROGRAM-ID. HELLO.
        AUTHOR. TEAM WYOMING.
@@ -79,7 +79,13 @@
            01  currentPassword                    PIC X(30).
            01  quitProgram                        PIC X VALUE "N".
            01  accountCount                       PIC 9 VALUE 0.
+
+       *> ---------- Old shared EOF (still used in some places where safe) ----------
            01  endOfFile                          PIC X VALUE "N".
+
+       *> ---------- NEW: dedicated EOF flags to prevent nested loop interference ----------
+           01  eofEstablished                     PIC X VALUE "N".
+           01  eofProfiles                        PIC X VALUE "N".
 
        *> ---------- Menus ----------
            01  menuChoice                         PIC X(100).
@@ -937,10 +943,10 @@
                            MOVE profileRecord(1167:20)  TO eduYears(1)
                            MOVE profileRecord(1187:50)  TO eduDegree(2)
                            MOVE profileRecord(1237:50)  TO eduUniversity(2)
-                           MOVE profileRecord(1257:20)  TO eduYears(2)
-                           MOVE profileRecord(1277:50)  TO eduDegree(3)
-                           MOVE profileRecord(1327:50)  TO eduUniversity(3)
-                           MOVE profileRecord(1377:20)  TO eduYears(3)
+                           MOVE profileRecord(1287:20)  TO eduYears(2)
+                           MOVE profileRecord(1307:50)  TO eduDegree(3)
+                           MOVE profileRecord(1357:50)  TO eduUniversity(3)
+                           MOVE profileRecord(1407:20)  TO eduYears(3)
                            MOVE "Y" TO endOfFile
                        END-IF
                END-READ
@@ -1627,17 +1633,20 @@
            CLOSE tempConnectionFile
            EXIT.
 
+       *> =======================
+       *> FIXED: show ALL connections (dedicated eofEstablished)
+       *> =======================
        viewMyNetwork.
            MOVE "=== MY NETWORK ===" TO messageVar
            PERFORM displayAndWrite
 
            MOVE "N" TO pendingRequestsFound
-           MOVE "N" TO endOfFile
+           MOVE "N" TO eofEstablished
 
            OPEN INPUT establishedConnectionFile
-           PERFORM UNTIL endOfFile = "Y"
+           PERFORM UNTIL eofEstablished = "Y"
                READ establishedConnectionFile INTO establishedConnectionRecord
-                   AT END MOVE "Y" TO endOfFile
+                   AT END MOVE "Y" TO eofEstablished
                    NOT AT END
                        MOVE establishedConnectionRecord TO establishedConnectionData
                        IF FUNCTION TRIM(connectedUser1) = FUNCTION TRIM(inputUsername)
@@ -1658,12 +1667,15 @@
            PERFORM displayAndWrite
            EXIT.
 
+       *> =======================
+       *> FIXED: use eofProfiles so nested READ doesn't flip outer loop
+       *> =======================
        displayConnectionInfo.
-           MOVE "N" TO endOfFile
+           MOVE "N" TO eofProfiles
            OPEN INPUT profileFile
-           PERFORM UNTIL endOfFile = "Y"
+           PERFORM UNTIL eofProfiles = "Y"
                READ profileFile INTO profileRecord
-                   AT END MOVE "Y" TO endOfFile
+                   AT END MOVE "Y" TO eofProfiles
                    NOT AT END
                        IF FUNCTION TRIM(profileRecord(1:30)) = FUNCTION TRIM(targetUsername)
                            MOVE SPACES TO messageVar
@@ -1679,7 +1691,7 @@
                               INTO messageVar
                            END-STRING
                            PERFORM displayAndWrite
-                           MOVE "Y" TO endOfFile
+                           MOVE "Y" TO eofProfiles
                        END-IF
                END-READ
            END-PERFORM
