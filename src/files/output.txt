@@ -249,10 +249,26 @@ Connection request sent to Bob.
 6. Manage Pending Connection Requests
 7. View My Network
 0. Log out
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
-Login or Quit? (L/Q)
+Please enter their first and then last name or 0 to go back.
+Enter last name:
+=== PROFILE ===
+Name: Alice Anderson
+University: University of South Florida
+Major: Computer Science
+Graduation Year: 2025
+About Me: I love programming and connections!
+Press Enter to continue...
+1. Send Connection Request
+2. Back to Main Menu
+Connection request sent to Alice.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
 Login or Quit? (L/Q)
 Are you a new user? (Y/N)
 You have successfully logged in
@@ -275,19 +291,8 @@ You are now connected with
 6. Manage Pending Connection Requests
 7. View My Network
 0. Log out
-Charlie has sent you a connection request. Accept or Reject? (A/R)
-You are now connected with
-1. Search for a job
-2. Find someone you know
-3. Learn a new skill
-4. Create/Edit My Profile
-5. View My Profile
-6. Manage Pending Connection Requests
-7. View My Network
-0. Log out
 === MY NETWORK ===
 Connected with: Alice
-Connected with: Charlie
 Press Enter to continue...
 1. Search for a job
 2. Find someone you know
@@ -309,8 +314,19 @@ Welcome, Alice!
 6. Manage Pending Connection Requests
 7. View My Network
 0. Log out
+Charlie has sent you a connection request. Accept or Reject? (A/R)
+You are now connected with
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
 === MY NETWORK ===
 Connected with: Bob
+Connected with: Charlie
 Press Enter to continue...
 1. Search for a job
 2. Find someone you know
