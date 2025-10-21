@@ -1,80 +1,22 @@
-X
+x
 L
 Y
 Alice
 Alice123!
-4
 1
-Alice
-Anderson
-University of South Florida
-Computer Science
-2025
-I love programming and connections!
-9
-0
-0
-L
-Y
-Bob
-Bob123!
-4
 1
-Bob
-Brown
-Florida International University
-Information Technology
-2024
-Passionate about technology and networking!
-9
-0
-0
-L
-N
-Alice
-Alice123!
+Software Engineer
+Engineer some software and shi
+FAANG
+Tampa, Florida
+1,000,000 per year
 2
-Bob
-Brown
 1
+Grocer
+Handles all the groceries in the store
+Sprouts
+Phoenix, Arizona
+40,000 per year
 0
-L
-Y
-Charlie
-Charlie123!
-4
-1
-Charlie
-Clause
-University of Alabama
-Biology
-2015
-I love biology!
-9
-0
-2
-Bob
-Brown
-1
-2
-Alice
-Anderson
-1
-0
-L
-N
-Bob
-Bob123!
-6
-A
-7
-0
-L
-N
-Alice
-Alice123!
-6
-A
-7
 0
 Q

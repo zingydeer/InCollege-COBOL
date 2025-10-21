@@ -1,4 +1,0 @@
-Alice                         Bob
-Bob                           Alice
-Charlie                       Alice
-Alice                         Charlie
