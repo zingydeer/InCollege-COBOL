@@ -1,22 +1,35 @@
-x
+X
 L
 Y
-Alice
-Alice123!
+alice
+A1!passw
 1
 1
-Software Engineer
-Engineer some software and shi
-FAANG
-Tampa, Florida
-1,000,000 per year
+Junior Developer
+Build new features in COBOL and Java.
+InCollege Inc
+Tampa, FL
+60000
+1
 2
-1
-Grocer
-Handles all the groceries in the store
-Sprouts
-Phoenix, Arizona
-40,000 per year
+Data Intern
+Data crunching and reporting.
+DataCo
+Remote
+
 0
+0
+L
+Y
+bob
+B2@passw0
+1
+2
+0000000001
+Y
+<enter>
+0
+3
+<enter>
 0
 Q

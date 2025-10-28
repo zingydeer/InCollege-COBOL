@@ -24,6 +24,8 @@
                       ORGANIZATION IS LINE SEQUENTIAL.
                SELECT jobPostingFile ASSIGN TO "src/files/job_postings.txt"
                       ORGANIZATION IS LINE SEQUENTIAL.
+               SELECT appliedJobsFile ASSIGN TO "src/files/applied_jobs.txt"
+                      ORGANIZATION IS LINE SEQUENTIAL.
 
            DATA DIVISION.
 
@@ -57,6 +59,10 @@
 
                FD jobPostingFile.
                01 jobPostingRecord               PIC X(500).
+
+               FD  appliedJobsFile.
+               01  applicationRecord                PIC X(500).
+
 
            WORKING-STORAGE SECTION.
            *> ---------- General I/O ----------
@@ -158,6 +164,9 @@
            01  jobPostingExit                    PIC X VALUE "N".
            01  nextJobID                         PIC 9(10) VALUE 1.
            01  tempJobID                         PIC X(10).
+           *>01 tempCountX                          PIC 9(4) VALUE 0.
+           01 tempCountEdited                     PIC Z(9).
+
 
            *> ---------- Pending request (sender|recipient = 61) ----------
                01  connectionData.
@@ -178,9 +187,18 @@
                01  user1Username                      PIC X(30).
                01  user2Username                      PIC X(30).
 
+           *> --- Applications temp fields ---
+               01  alreadyApplied     PIC X     VALUE "N".
+               01  tempTitle          PIC X(50).
+               01  tempEmployer       PIC X(50).
+               01  tempUsername       PIC X(30).
+               *>01  tempCountX         PIC 9(4)  VALUE 0.
+
+
            PROCEDURE DIVISION.
-               OPEN INPUT userInputFile
-               OPEN OUTPUT userOutputFile.
+               PERFORM openIO
+               *>OPEN INPUT userInputFile
+               *>OPEN OUTPUT userOutputFile.
 
                MOVE "Welcome to inCollege by Team Wyoming!" TO messageVar
                PERFORM displayAndWrite.
@@ -235,8 +253,9 @@
                    END-READ
                END-PERFORM.
 
-               CLOSE userInputFile
-               CLOSE userOutputFile.
+               *>CLOSE userInputFile
+               *>CLOSE userOutputFile.
+               PERFORM closeIO
                STOP RUN.
 
            *> ***************** Subroutines *****************
@@ -459,37 +478,41 @@
                EXIT.
 
            searchForJobMenu.
-                MOVE "N" TO exitSearch
-                PERFORM UNTIL exitSearch = "Y"
-                    MOVE "=== JOB SEARCH/INTERNSHIP ===" TO messageVar
-                    PERFORM displayAndWrite
-                    MOVE "1. Post a Job/Internship" TO messageVar
-                    PERFORM displayAndWrite
-                    MOVE "2. Browse Jobs/Internships" TO messageVar
-                    PERFORM displayAndWrite
-                    MOVE "0. Go Back" TO messageVar
-                    PERFORM displayAndWrite
-                    MOVE "Enter your choice:" TO messageVar
-                    PERFORM displayAndWrite
+    MOVE "N" TO exitSearch
+    PERFORM UNTIL exitSearch = "Y"
+        MOVE "=== JOB SEARCH/INTERNSHIP ===" TO messageVar
+        PERFORM displayAndWrite
+        MOVE "1. Post a Job/Internship" TO messageVar
+        PERFORM displayAndWrite
+        MOVE "2. Browse Jobs/Internships" TO messageVar
+        PERFORM displayAndWrite
+        MOVE "3. View My Applications" TO messageVar     *> <-- NEW OPTION
+        PERFORM displayAndWrite
+        MOVE "0. Go Back" TO messageVar
+        PERFORM displayAndWrite
+        MOVE "Enter your choice:" TO messageVar
+        PERFORM displayAndWrite
 
-                   READ userInputFile INTO userInputRecord
-                       AT END MOVE "Y" TO exitSearch
-                       NOT AT END MOVE userInputRecord TO menuChoice
-                   END-READ
+        READ userInputFile INTO userInputRecord
+            AT END MOVE "Y" TO exitSearch
+            NOT AT END MOVE userInputRecord TO menuChoice
+        END-READ
 
-                       IF menuChoice = "1" OR menuChoice = "Post a Job/Internship"
-                           PERFORM postJobInternship
-                       ELSE IF menuChoice = "2" OR menuChoice = "Browse Jobs/Internships"
-                           MOVE "Browse Jobs/Internships functionality is under construction." TO messageVar
-                           PERFORM displayAndWrite
-                       ELSE IF menuChoice = "0" OR menuChoice = "Go Back"
-                           MOVE "Y" TO exitSearch
-                       ELSE
-                           MOVE "Invalid choice, please try again." TO messageVar
-                           PERFORM displayAndWrite
-                       END-IF
-               END-PERFORM
-               EXIT.
+        IF menuChoice = "1" OR menuChoice = "Post a Job/Internship"
+            PERFORM postJobInternship
+        ELSE IF menuChoice = "2" OR menuChoice = "Browse Jobs/Internships"
+            PERFORM browseJobsInternships
+        ELSE IF menuChoice = "3" OR menuChoice = "View My Applications"  *> <-- NEW BRANCH
+            PERFORM viewMyApplications
+        ELSE IF menuChoice = "0" OR menuChoice = "Go Back"
+            MOVE "Y" TO exitSearch
+        ELSE
+            MOVE "Invalid choice, please try again." TO messageVar
+            PERFORM displayAndWrite
+        END-IF
+    END-PERFORM
+    EXIT.
+
 
            findSomeoneMenu.
                MOVE "Please enter their first and then last name or 0 to go back." TO messageVar
@@ -1827,22 +1850,343 @@
            saveJobPosting.
                 OPEN EXTEND jobPostingFile
 
+                *> Auto-generate Job ID
+                IF jobID = SPACES OR jobID = ZERO
+                    MOVE FUNCTION CURRENT-DATE TO jobID
+                END-IF
+
                 *> Build delimited record for easier parsing
-                STRING jobID DELIMITED BY SIZE
-                       "|" DELIMITED BY SIZE
-                       jobTitle DELIMITED BY SPACE
-                       "|" DELIMITED BY SIZE
-                       jobDescription DELIMITED BY SPACE
-                       "|" DELIMITED BY SIZE
-                       jobEmployer DELIMITED BY SPACE
-                       "|" DELIMITED BY SIZE
-                       jobLocation DELIMITED BY SPACE
-                       "|" DELIMITED BY SIZE
-                       jobSalary DELIMITED BY SPACE
-                       "|" DELIMITED BY SIZE
-                       postedByUser DELIMITED BY SPACE
-                INTO jobPostingRecord
+                STRING jobID            DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       jobTitle         DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       jobDescription   DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       jobEmployer      DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       jobLocation      DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       jobSalary        DELIMITED BY SIZE
+                       "|"              DELIMITED BY SIZE
+                       postedByUser     DELIMITED BY SIZE
+                  INTO jobPostingRecord
 
                 WRITE jobPostingRecord
                 CLOSE jobPostingFile
-            EXIT.
+                EXIT.
+
+           browseJobsInternships.
+               MOVE "=== AVAILABLE JOBS / INTERNSHIPS ===" TO messageVar
+               PERFORM displayAndWrite
+
+               OPEN INPUT jobPostingFile
+
+               Move "N" to endOfFile
+                PERFORM UNTIL endOfFile = "Y"
+                     READ jobPostingFile INTO jobPostingRecord
+                          AT END MOVE "Y" TO endOfFile
+                          NOT AT END
+                            *> Parse delimited record
+                            UNSTRING jobPostingRecord
+                                 DELIMITED BY "|"
+                                 INTO jobID
+                                        jobTitle
+                                        jobDescription
+                                        jobEmployer
+                                        jobLocation
+                                        jobSalary
+                                        postedByUser
+
+                            MOVE SPACES TO messageVar
+                            STRING "Job ID: " DELIMITED BY SIZE
+                                     FUNCTION TRIM(jobID) DELIMITED BY SIZE
+                                     ", Title: " DELIMITED BY SIZE
+                                     FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
+                                     ", Employer: " DELIMITED BY SIZE
+                                     FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
+                                     ", Location: " DELIMITED BY SIZE
+                                     FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
+                              INTO messageVar
+                            END-STRING
+                            PERFORM displayAndWrite
+                     END-READ
+                END-PERFORM
+                CLOSE jobPostingFile.
+               MOVE "Enter Job ID to view details, or 0 to go back:" TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END CONTINUE
+                   NOT AT END MOVE userInputRecord TO menuChoice
+               END-READ
+
+               IF FUNCTION TRIM(menuChoice) NOT = "0" AND FUNCTION TRIM(menuChoice) NOT = SPACES
+                   PERFORM viewJobDetails
+               END-IF
+               MOVE "Press ENTER to return to the menu..." TO messageVar
+               PERFORM displayAndWrite
+               READ userInputFile INTO userInputRecord
+                   AT END CONTINUE
+                   NOT AT END CONTINUE
+               END-READ.
+               EXIT.
+
+           viewJobDetails.
+                OPEN INPUT jobPostingFile
+
+                MOVE "N" TO endOfFile
+                PERFORM UNTIL endOfFile = "Y"
+                    READ jobPostingFile INTO jobPostingRecord
+                        AT END
+                            MOVE "No job found with that ID." TO messageVar
+                            PERFORM displayAndWrite
+                            MOVE "Y" TO endOfFile
+                        NOT AT END
+                            UNSTRING jobPostingRecord
+                                DELIMITED BY "|"
+                                INTO jobID
+                                     jobTitle
+                                     jobDescription
+                                     jobEmployer
+                                     jobLocation
+                                     jobSalary
+                                     postedByUser
+
+                            IF FUNCTION TRIM(jobID) = FUNCTION TRIM(menuChoice)
+                                MOVE "=== JOB DETAILS ===" TO messageVar
+                                PERFORM displayAndWrite
+
+                                MOVE SPACES TO messageVar
+                                STRING "Title: "              DELIMITED BY SIZE
+                                       FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
+                                  INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                MOVE SPACES TO messageVar
+                                STRING "Description: "                 DELIMITED BY SIZE
+                                       FUNCTION TRIM(jobDescription)    DELIMITED BY SIZE
+                                  INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                MOVE SPACES TO messageVar
+                                STRING "Employer: "           DELIMITED BY SIZE
+                                       FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
+                                  INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                MOVE SPACES TO messageVar
+                                STRING "Location: "           DELIMITED BY SIZE
+                                       FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
+                                  INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                MOVE SPACES TO messageVar
+                                STRING "Salary: "             DELIMITED BY SIZE
+                                       FUNCTION TRIM(jobSalary) DELIMITED BY SIZE
+                                  INTO messageVar
+                                END-STRING
+                                PERFORM displayAndWrite
+
+                                MOVE "Y" TO endOfFile
+                            END-IF
+                    END-READ
+                END-PERFORM
+
+                CLOSE jobPostingFile.
+
+                MOVE "Apply for this job? (Y/N):" TO messageVar
+                   PERFORM displayAndWrite
+
+                   READ userInputFile INTO userInputRecord
+                       AT END CONTINUE
+                       NOT AT END MOVE userInputRecord TO menuChoice
+                   END-READ
+
+                   IF menuChoice = "Y" OR menuChoice = "y"
+                       PERFORM registerApplication
+                   END-IF
+
+                MOVE "Press ENTER to return to the menu..." TO messageVar
+                PERFORM displayAndWrite
+                READ userInputFile INTO userInputRecord
+                    AT END CONTINUE
+                    NOT AT END CONTINUE
+                END-READ.
+                EXIT.
+
+           registerApplication.
+           MOVE "N" TO alreadyApplied
+
+           *> First: duplicate scan (same user applying to same job?)
+           OPEN INPUT appliedJobsFile
+           MOVE "N" TO endOfFile
+           PERFORM UNTIL endOfFile = "Y"
+               READ appliedJobsFile INTO applicationRecord
+                   AT END MOVE "Y" TO endOfFile
+                   NOT AT END
+                       UNSTRING applicationRecord DELIMITED BY "|"
+                           INTO tempJobID
+                                tempTitle
+                                tempEmployer
+                                tempUsername
+                       IF FUNCTION TRIM(tempJobID)     = FUNCTION TRIM(jobID)
+                          AND FUNCTION TRIM(tempUsername) = FUNCTION TRIM(inputUsername)
+                           MOVE "Y" TO alreadyApplied
+                           MOVE "Y" TO endOfFile
+                       END-IF
+               END-READ
+           END-PERFORM
+           CLOSE appliedJobsFile
+
+           IF alreadyApplied = "Y"
+               MOVE "You already applied to this job." TO messageVar
+               PERFORM displayAndWrite
+               EXIT PARAGRAPH
+           END-IF
+
+           *> Not a duplicate: append the application
+           OPEN EXTEND appliedJobsFile
+           MOVE SPACES TO applicationRecord
+           STRING FUNCTION TRIM(jobID)        DELIMITED BY SIZE
+                  "|"                         DELIMITED BY SIZE
+                  FUNCTION TRIM(jobTitle)     DELIMITED BY SIZE
+                  "|"                         DELIMITED BY SIZE
+                  FUNCTION TRIM(jobEmployer)  DELIMITED BY SIZE
+                  "|"                         DELIMITED BY SIZE
+                  FUNCTION TRIM(inputUsername) DELIMITED BY SIZE
+             INTO applicationRecord
+           END-STRING
+           WRITE applicationRecord
+           CLOSE appliedJobsFile
+
+           MOVE SPACES TO messageVar
+           STRING "Your application for "     DELIMITED BY SIZE
+                  FUNCTION TRIM(jobTitle)     DELIMITED BY SIZE
+                  " at "                      DELIMITED BY SIZE
+                  FUNCTION TRIM(jobEmployer)  DELIMITED BY SIZE
+                  " has been submitted."      DELIMITED BY SIZE
+             INTO messageVar
+           END-STRING
+           PERFORM displayAndWrite
+           EXIT.
+
+
+
+
+          viewMyApplications.
+    MOVE "--- Your Job Applications ---" TO messageVar
+    PERFORM displayAndWrite
+
+    MOVE SPACES TO messageVar
+    STRING "Application Summary for " DELIMITED BY SIZE
+           FUNCTION TRIM(inputUsername) DELIMITED BY SIZE
+      INTO messageVar
+    END-STRING
+    PERFORM displayAndWrite
+
+    MOVE "------------------------------" TO messageVar
+    PERFORM displayAndWrite
+
+    *> Scan applications (open once, close once)
+    OPEN INPUT appliedJobsFile
+    MOVE 0 TO i
+    MOVE "N" TO endOfFile
+    PERFORM UNTIL endOfFile = "Y"
+        READ appliedJobsFile INTO applicationRecord
+            AT END
+                MOVE "Y" TO endOfFile
+            NOT AT END
+                *> applicationRecord: jobID|jobTitle|jobEmployer|applicantUsername
+                UNSTRING applicationRecord DELIMITED BY "|"
+                    INTO jobID
+                         jobTitle
+                         jobEmployer
+                         postedByUser   *> reuse as applicant username
+                IF FUNCTION TRIM(postedByUser) = FUNCTION TRIM(inputUsername)
+                    *> Look up job details by ID (title/employer/location)
+                    OPEN INPUT jobPostingFile
+                    MOVE "N" TO eofEstablished
+                    PERFORM UNTIL eofEstablished = "Y"
+                        READ jobPostingFile INTO jobPostingRecord
+                            AT END
+                                MOVE "Y" TO eofEstablished
+                            NOT AT END
+                                UNSTRING jobPostingRecord DELIMITED BY "|"
+                                    INTO tempJobID
+                                         jobTitle
+                                         jobDescription
+                                         jobEmployer
+                                         jobLocation
+                                         jobSalary
+                                         postedByUser  *> poster username (ignored here)
+                                IF FUNCTION TRIM(tempJobID) = FUNCTION TRIM(jobID)
+                                    MOVE SPACES TO messageVar
+                                    STRING "Job Title: " DELIMITED BY SIZE
+                                           FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
+                                      INTO messageVar
+                                    END-STRING
+                                    PERFORM displayAndWrite
+
+                                    MOVE SPACES TO messageVar
+                                    STRING "Employer: " DELIMITED BY SIZE
+                                           FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
+                                      INTO messageVar
+                                    END-STRING
+                                    PERFORM displayAndWrite
+
+                                    MOVE SPACES TO messageVar
+                                    STRING "Location: " DELIMITED BY SIZE
+                                           FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
+                                      INTO messageVar
+                                    END-STRING
+                                    PERFORM displayAndWrite
+
+                                    MOVE "---" TO messageVar
+                                    PERFORM displayAndWrite
+
+                                    ADD 1 TO i
+                                    MOVE "Y" TO eofEstablished
+                                END-IF
+                        END-READ
+                    END-PERFORM
+                    CLOSE jobPostingFile
+                END-IF
+        END-READ
+    END-PERFORM
+    CLOSE appliedJobsFile
+
+    MOVE "------------------------------" TO messageVar
+    PERFORM displayAndWrite
+
+    *> Print the total once (pretty, no leading zeros)
+    MOVE i TO tempCountEdited
+    MOVE SPACES TO messageVar
+    STRING "Total Applications: " DELIMITED BY SIZE
+           FUNCTION TRIM(tempCountEdited) DELIMITED BY SIZE
+      INTO messageVar
+    END-STRING
+    PERFORM displayAndWrite
+
+    MOVE "------------------------------" TO messageVar
+    PERFORM displayAndWrite
+
+    MOVE "Press ENTER to return to the menu..." TO messageVar
+    PERFORM displayAndWrite
+    READ userInputFile INTO userInputRecord
+        AT END CONTINUE
+        NOT AT END CONTINUE
+    END-READ
+    EXIT.
+
+         openIO.
+              OPEN INPUT userInputFile
+              OPEN OUTPUT userOutputFile
+              EXIT.
+
+         closeIO.
+              CLOSE userInputFile
+              CLOSE userOutputFile
+              EXIT.

@@ -4,7 +4,7 @@ All files cleared.
 Login or Quit? (L/Q)
 Are you a new user? (Y/N)
 Account Created.
-Welcome, Alice!
+Welcome, alice!
 1. Search for a job
 2. Find someone you know
 3. Learn a new skill
@@ -16,6 +16,7 @@ Welcome, Alice!
 === JOB SEARCH/INTERNSHIP ===
 1. Post a Job/Internship
 2. Browse Jobs/Internships
+3. View My Applications
 0. Go Back
 Enter your choice:
 === POST A JOB/INTERNSHIP ===
@@ -28,12 +29,7 @@ Job posting created successfully!
 === JOB SEARCH/INTERNSHIP ===
 1. Post a Job/Internship
 2. Browse Jobs/Internships
-0. Go Back
-Enter your choice:
-Browse Jobs/Internships functionality is under construction.
-=== JOB SEARCH/INTERNSHIP ===
-1. Post a Job/Internship
-2. Browse Jobs/Internships
+3. View My Applications
 0. Go Back
 Enter your choice:
 === POST A JOB/INTERNSHIP ===
@@ -46,6 +42,14 @@ Job posting created successfully!
 === JOB SEARCH/INTERNSHIP ===
 1. Post a Job/Internship
 2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+Invalid choice, please try again.
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
 0. Go Back
 Enter your choice:
 1. Search for a job
@@ -57,4 +61,74 @@ Enter your choice:
 7. View My Network
 0. Log out
 Login or Quit? (L/Q)
-Thank you for using inCollege
+Are you a new user? (Y/N)
+Account Created.
+Welcome, bob!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== AVAILABLE JOBS / INTERNSHIPS ===
+Job ID: 0000000001, Title: Junior Developer, Employer: InCollege Inc, Location: Tampa, FL
+Job ID: 0000000002, Title: 2, Employer: Data crunching and reporting., Location: DataCo
+Enter Job ID to view details, or 0 to go back:
+=== JOB DETAILS ===
+Title: Junior Developer
+Description: Build new features in COBOL and Java.
+Employer: InCollege Inc
+Location: Tampa, FL
+Salary: 60000
+Apply for this job? (Y/N):
+You already applied to this job.
+Press ENTER to return to the menu...
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+--- Your Job Applications ---
+Application Summary for bob
+------------------------------
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+---
+------------------------------
+Total Applications: 1
+------------------------------
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
