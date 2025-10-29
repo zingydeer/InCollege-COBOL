@@ -1,1 +1,2 @@
 0000000001|Junior Developer|InCollege Inc|bob
+0000000002|2|Data crunching and reporting.|bob

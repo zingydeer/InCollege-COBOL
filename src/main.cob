@@ -1898,13 +1898,21 @@
                                         postedByUser
 
                             MOVE SPACES TO messageVar
-                            STRING "Job ID: " DELIMITED BY SIZE
-                                     FUNCTION TRIM(jobID) DELIMITED BY SIZE
-                                     ", Title: " DELIMITED BY SIZE
+                            STRING "Job Title: " DELIMITED BY SIZE
                                      FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
-                                     ", Employer: " DELIMITED BY SIZE
+                              INTO messageVar
+                            END-STRING
+                            PERFORM displayAndWrite
+
+                            MOVE SPACES TO messageVar
+                            STRING "Employer: " DELIMITED BY SIZE
                                      FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
-                                     ", Location: " DELIMITED BY SIZE
+                              INTO messageVar
+                            END-STRING
+                            PERFORM displayAndWrite
+
+                            MOVE SPACES TO messageVar
+                            STRING "Location: " DELIMITED BY SIZE
                                      FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
                               INTO messageVar
                             END-STRING
