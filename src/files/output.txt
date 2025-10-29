@@ -45,7 +45,161 @@ Job posting created successfully!
 3. View My Applications
 0. Go Back
 Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+Account Created.
+Welcome, bob!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== AVAILABLE JOBS / INTERNSHIPS ===
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Enter Job ID to view details, or 0 to go back:
+=== JOB DETAILS ===
+Title: Junior Developer
+Description: Build new features in COBOL and Java.
+Employer: InCollege Inc
+Location: Tampa, FL
+Salary: 60000
+Apply for this job? (Y/N):
+You already applied to this job.
+Press ENTER to return to the menu...
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+--- Your Job Applications ---
+Application Summary for bob
+------------------------------
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+---
+------------------------------
+Total Applications: 1
+------------------------------
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
 Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Invalid choice, please try again.
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== POST A JOB/INTERNSHIP ===
+Enter Job Title (Required):
+Enter Job Description (Required):
+Enter Employer/Company (Required):
+Enter Location (Required):
+Enter Salary (Optional, press Enter to skip):
+Job posting created successfully!
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== POST A JOB/INTERNSHIP ===
+Enter Job Title (Required):
+Enter Job Description (Required):
+Enter Employer/Company (Required):
+Enter Location (Required):
+Enter Salary (Optional, press Enter to skip):
+Job posting created successfully!
 === JOB SEARCH/INTERNSHIP ===
 1. Post a Job/Internship
 2. Browse Jobs/Internships
@@ -82,9 +236,15 @@ Enter your choice:
 Job Title: Junior Developer
 Employer: InCollege Inc
 Location: Tampa, FL
-Job Title: 2
-Employer: Data crunching and reporting.
-Location: DataCo
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
 Enter Job ID to view details, or 0 to go back:
 === JOB DETAILS ===
 Title: Junior Developer
@@ -109,9 +269,112 @@ Job Title: Junior Developer
 Employer: InCollege Inc
 Location: Tampa, FL
 ---
-Job Title: 2
-Employer: Data crunching and reporting.
-Location: DataCo
+------------------------------
+Total Applications: 1
+------------------------------
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, alice!
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== AVAILABLE JOBS / INTERNSHIPS ===
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Enter Job ID to view details, or 0 to go back:
+=== JOB DETAILS ===
+Title: Junior Developer
+Description: Build new features in COBOL and Java.
+Employer: InCollege Inc
+Location: Tampa, FL
+Salary: 60000
+Apply for this job? (Y/N):
+You already applied to this job.
+Press ENTER to return to the menu...
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== AVAILABLE JOBS / INTERNSHIPS ===
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Enter Job ID to view details, or 0 to go back:
+=== JOB DETAILS ===
+Title: Data Intern
+Description: Data crunching and reporting.
+Employer: DataCo
+Location: Remote
+Salary: 7000
+Apply for this job? (Y/N):
+You already applied to this job.
+Press ENTER to return to the menu...
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+--- Your Job Applications ---
+Application Summary for alice
+------------------------------
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+---
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
 ---
 ------------------------------
 Total Applications: 2
@@ -131,7 +394,10 @@ Enter your choice:
 6. Manage Pending Connection Requests
 7. View My Network
 0. Log out
-Invalid choice, please try again.
+Login or Quit? (L/Q)
+Are you a new user? (Y/N)
+You have successfully logged in
+Welcome, bob!
 1. Search for a job
 2. Find someone you know
 3. Learn a new skill
@@ -140,3 +406,70 @@ Invalid choice, please try again.
 6. Manage Pending Connection Requests
 7. View My Network
 0. Log out
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+=== AVAILABLE JOBS / INTERNSHIPS ===
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+Enter Job ID to view details, or 0 to go back:
+=== JOB DETAILS ===
+Title: Data Intern
+Description: Data crunching and reporting.
+Employer: DataCo
+Location: Remote
+Salary: 7000
+Apply for this job? (Y/N):
+Your application for Data Intern at DataCo has been submitted.
+Press ENTER to return to the menu...
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+--- Your Job Applications ---
+Application Summary for bob
+------------------------------
+Job Title: Junior Developer
+Employer: InCollege Inc
+Location: Tampa, FL
+---
+Job Title: Data Intern
+Employer: DataCo
+Location: Remote
+---
+------------------------------
+Total Applications: 2
+------------------------------
+Press ENTER to return to the menu...
+=== JOB SEARCH/INTERNSHIP ===
+1. Post a Job/Internship
+2. Browse Jobs/Internships
+3. View My Applications
+0. Go Back
+Enter your choice:
+1. Search for a job
+2. Find someone you know
+3. Learn a new skill
+4. Create/Edit My Profile
+5. View My Profile
+6. Manage Pending Connection Requests
+7. View My Network
+0. Log out
+Login or Quit? (L/Q)
+Thank you for using inCollege

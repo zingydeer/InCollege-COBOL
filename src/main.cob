@@ -1897,26 +1897,26 @@
                                         jobSalary
                                         postedByUser
 
-                            MOVE SPACES TO messageVar
-                            STRING "Job Title: " DELIMITED BY SIZE
-                                     FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
-                              INTO messageVar
-                            END-STRING
-                            PERFORM displayAndWrite
+                           MOVE SPACES TO messageVar
+                           STRING "Job Title: "           DELIMITED BY SIZE
+                                  FUNCTION TRIM(jobTitle) DELIMITED BY SIZE
+                             INTO messageVar
+                           END-STRING
+                           PERFORM displayAndWrite
 
-                            MOVE SPACES TO messageVar
-                            STRING "Employer: " DELIMITED BY SIZE
-                                     FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
-                              INTO messageVar
-                            END-STRING
-                            PERFORM displayAndWrite
+                           MOVE SPACES TO messageVar
+                           STRING "Employer: "            DELIMITED BY SIZE
+                                  FUNCTION TRIM(jobEmployer) DELIMITED BY SIZE
+                             INTO messageVar
+                           END-STRING
+                           PERFORM displayAndWrite
 
-                            MOVE SPACES TO messageVar
-                            STRING "Location: " DELIMITED BY SIZE
-                                     FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
-                              INTO messageVar
-                            END-STRING
-                            PERFORM displayAndWrite
+                           MOVE SPACES TO messageVar
+                           STRING "Location: "            DELIMITED BY SIZE
+                                  FUNCTION TRIM(jobLocation) DELIMITED BY SIZE
+                             INTO messageVar
+                           END-STRING
+                           PERFORM displayAndWrite
                      END-READ
                 END-PERFORM
                 CLOSE jobPostingFile.

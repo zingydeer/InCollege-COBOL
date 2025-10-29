@@ -1,2 +1,5 @@
 0000000001|Junior Developer|InCollege Inc|bob
-0000000002|2|Data crunching and reporting.|bob
+0000000001|Junior Developer|InCollege Inc|alice
+|||alice
+0000000002|Data Intern|DataCo|alice
+0000000002|Data Intern|DataCo|bob
