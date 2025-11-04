@@ -1,102 +1,47 @@
 X
 L
 Y
-alice
-A1!passw
+TestingAccount1
+TestPass12#
+4
 1
-1
-Junior Developer
-Build new features in COBOL and Java.
-InCollege Inc
-Tampa, FL
-60000
-1
-Data Intern
-Data crunching and reporting.
-DataCo
-Remote
-7000
+Jane
+Doe
+USF
+Computer Science
+2025
+Computer Science Fanatic
+9
 0
 0
 L
 Y
-bob
-B2@passw0
+TestingAccount2
+TestPass12#
+4
 1
+John
+Doe
+USF
+Computer Engineering
+2025
+Computer Engineering Fanatic
+9
+0
 2
-0000000001
-Y
-<enter>
-0
-3
-<enter>
-0
-Q
-X
-L
-Y
-alice
-A1!passw
+Jane
+Doe
 1
-1
-Junior Developer
-Build new features in COBOL and Java.
-InCollege Inc
-Tampa, FL
-60000
-1
-Data Intern
-Data crunching and reporting.
-DataCo
-Remote
-7000
-0
-0
-L
-Y
-bob
-B2@passw0
-1
-2
-0000000001
-Y
-<enter>
-0
-3
-<enter>
-0
 0
 L
 N
-alice
-A1!passw
+TestingAccount1
+TestPass12#
+6
+A
+8
 1
-2
-0000000001
-Y
-<enter>
-0
-2
-0000000002
-Y
-<enter>
-0
-3
-<enter>
-0
-0
-L
-N
-bob
-B2@passw0
-1
-2
-0000000002
-Y
-<enter>
-0
-3
-<enter>
-0
+TestingAccount2
+Hello there!
 0
 Q

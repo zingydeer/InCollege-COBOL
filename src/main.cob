@@ -27,6 +27,9 @@
                SELECT appliedJobsFile ASSIGN TO "src/files/applied_jobs.txt"
                       ORGANIZATION IS LINE SEQUENTIAL.
 
+               SELECT messageFile ASSIGN TO "src/files/message_file.txt"
+                       ORGANIZATION IS LINE SEQUENTIAL.
+
            DATA DIVISION.
 
            FILE SECTION.
@@ -62,6 +65,9 @@
 
                FD  appliedJobsFile.
                01  applicationRecord                PIC X(500).
+
+               FD messageFile.
+               01 messageFileRecord    PIC X(313).
 
 
            WORKING-STORAGE SECTION.
@@ -194,6 +200,21 @@
                01  tempUsername       PIC X(30).
                *>01  tempCountX         PIC 9(4)  VALUE 0.
 
+               *>Send Message Variables
+
+               01 messageRecipientUsername PIC X(30).
+               01 isConnectedVar PIC X(30).
+
+               01 messageText PIC X(250).
+
+               01 messageRecord.
+                   05 sendingUsername       PIC X(30).
+                   05 divChar               PIC X VALUE '|'.
+                   05 receivingUsername     PIC X(30).
+                   05 divChar2              PIC X VALUE '|'.
+                   05 messageContent        PIC X(250).
+
+
 
            PROCEDURE DIVISION.
                PERFORM openIO
@@ -290,6 +311,8 @@
                CLOSE establishedConnectionFile
                OPEN OUTPUT jobPostingFile
                CLOSE jobPostingFile
+               OPEN OUTPUT messageFile
+               CLOSE messageFile
                MOVE "All files cleared." TO messageVar
                PERFORM displayAndWrite
                EXIT.
@@ -417,6 +440,8 @@
                    PERFORM displayAndWrite
                    MOVE "7. View My Network" TO messageVar
                    PERFORM displayAndWrite
+                   MOVE "8. Messages" TO messageVar
+                   PERFORM displayAndWrite
                    MOVE "0. Log out" TO messageVar
                    PERFORM displayAndWrite
 
@@ -435,6 +460,7 @@
                            WHEN "5" WHEN "View My Profile" PERFORM viewProfile
                            WHEN "6" WHEN "Manage Pending Connection Requests" PERFORM processConnectionRequests
                            WHEN "7" WHEN "View My Network" PERFORM viewMyNetwork
+                           WHEN "8" WHEN "Messages" PERFORM MessagesMenu
                            WHEN OTHER
                                MOVE "Invalid choice, please try again." TO messageVar
                                PERFORM displayAndWrite
@@ -1478,10 +1504,10 @@
                *> (1) Check duplicates in pending (either direction)
                OPEN INPUT connectionFile
                PERFORM UNTIL endOfFile = "Y"
-                   READ connectionFile INTO existingConnectionRecord
+                   READ connectionFile INTO connectionData
                        AT END MOVE "Y" TO endOfFile
                        NOT AT END
-                           MOVE existingConnectionRecord TO connectionData
+                           MOVE existingConnectionRecord TO establishedConnectionData
                            IF (FUNCTION TRIM(senderUsername)    = FUNCTION TRIM(originalUsername)
                             AND FUNCTION TRIM(recipientUsername) = FUNCTION TRIM(targetUsername))
                             OR (FUNCTION TRIM(senderUsername)    = FUNCTION TRIM(targetUsername)
@@ -2198,3 +2224,99 @@
               CLOSE userInputFile
               CLOSE userOutputFile
               EXIT.
+
+          messagesMenu.
+          MOVE "---- My Messages -----" TO messageVar
+          PERFORM displayAndWrite
+          MOVE "0. Go back" TO messageVar
+          PERFORM displayAndWrite
+          MOVE "1. Send a New Message" TO messageVar
+          PERFORM displayAndWrite
+          MOVE "2. View My Messages" TO messageVar
+          PERFORM displayAndWrite
+          MOVE "-----------------------" TO messageVar
+          PERFORM displayAndWrite
+
+          READ userInputFile INTO userInputRecord
+                       AT END MOVE "Y" TO quitProgram
+                       NOT AT END MOVE userInputRecord TO menuChoice
+                   END-READ
+
+          EVALUATE FUNCTION TRIM(menuChoice)
+                           WHEN "0" WHEN "Go back" PERFORM postLoginMenu
+                           WHEN "1" WHEN "Send a New Message" PERFORM sendMessageMenu
+                           WHEN "2" WHEN "View My Messages" PERFORM viewMessagesMenu
+                           WHEN OTHER
+                               MOVE "Invalid choice, please try again." TO messageVar
+                               PERFORM displayAndWrite
+                       END-EVALUATE
+           EXIT.
+
+           sendMessageMenu.
+           MOVE "Recipient Username:" to messageVar
+           PERFORM displayAndWrite
+
+           READ userInputFile INTO userInputRecord
+                       AT END MOVE "Y" TO profileExit
+                       NOT AT END MOVE userInputRecord TO messageRecipientUsername
+                   END-READ
+
+           PERFORM isConnected
+
+           IF isConnectedVar = "N"
+               MOVE "User is not in your network" TO messageVar
+               PERFORM displayAndWrite
+               PERFORM sendMessageMenu
+           END-IF
+
+           IF isConnectedVar = "Y"
+                  MOVE "Message Content:" to messageVar
+                  PERFORM displayAndWrite
+
+                  READ userInputFile INTO userInputRecord
+                              AT END MOVE "Y" TO profileExit
+                              NOT AT END MOVE userInputRecord TO messageText
+                  END-READ
+
+                  OPEN EXTEND messageFile
+
+                  MOVE userName TO sendingUsername
+                  MOVE recipientUsername TO receivingUsername
+                  MOVE messageText to messageContent
+
+                  WRITE messageFileRecord FROM messageRecord
+
+                  close messageFile
+           END-IF
+
+           EXIT.
+
+           viewMessagesMenu.
+           MOVE "View My Messages currently under construction" to messageVar
+           PERFORM displayAndWrite
+           PERFORM messagesMenu
+           EXIT.
+
+       isConnected.
+           MOVE "N" TO isConnectedVar
+           MOVE "N" TO endOfFile
+           OPEN INPUT establishedConnectionFile
+           PERFORM UNTIL endOfFile = "Y"
+               READ establishedConnectionFile
+                   AT END
+                       MOVE "Y" TO endOfFile
+                   NOT AT END
+
+                       MOVE establishedConnectionRecord TO establishedConnectionData
+                       IF (FUNCTION TRIM(connectedUser1) = FUNCTION TRIM(inputUsername) AND FUNCTION TRIM(connectedUser2) = FUNCTION TRIM(messageRecipientUsername))
+                           MOVE "Y" TO isConnectedVar
+                           MOVE "Y" TO endOfFile
+                       END-IF
+                       IF (FUNCTION TRIM(connectedUser2) = FUNCTION TRIM(inputUsername) AND FUNCTION TRIM(connectedUser1) = FUNCTION TRIM(messageRecipientUsername))
+                           MOVE "Y" TO isConnectedVar
+                           MOVE "Y" TO endOfFile
+                       END-IF
+               END-READ
+           END-PERFORM
+           CLOSE establishedConnectionFile
+       EXIT.
