@@ -1,0 +1,20 @@
+X
+L
+Y
+PersistSender
+Pass123!
+L
+Y
+PersistReceiver
+Pass123!
+L
+N
+PersistSender
+Pass123!
+8
+1
+PersistReceiver
+Persistent hello.
+0
+0
+Q
